@@ -40,7 +40,7 @@ namespace Jawan.Portal
                     Session["GRVPrefix"] = string.Empty;
                     Session["DCPrefix"] = string.Empty;
                     Session["BranchID"] = string.Empty;
-
+                    Session["HomeBranch"] = string.Empty;
                     LoadAllCompanies();
 
                 }
@@ -80,7 +80,7 @@ namespace Jawan.Portal
                     Session["GRVPrefix"] = DtBranchPrefix.Rows[0]["GRVPrefix"].ToString();
                     Session["DCPrefix"] = DtBranchPrefix.Rows[0]["DCPrefix"].ToString();
                     Session["BranchID"] = DtBranchPrefix.Rows[0]["BranchID"].ToString();
-
+                    Session["HomeBranch"] = DtBranchPrefix.Rows[0]["BranchID"].ToString();
 
                 }
             }

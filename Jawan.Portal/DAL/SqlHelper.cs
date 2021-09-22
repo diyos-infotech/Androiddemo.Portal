@@ -2215,7 +2215,66 @@ namespace KLTS.Data
         }
 
 
+        public DataTable LoadHolidayList(string ZoneId)
+        {
+            string ProcedureName = "GetHolidaysList";
+            Hashtable HtSPParameters = new Hashtable();
+            HtSPParameters.Add("@ZoneID", ZoneId);
+            //HtSPParameters.Add("@year", year);
+            System.Data.DataTable DtHolidayList = config.ExecuteAdaptorAsyncWithParams(ProcedureName, HtSPParameters).Result;
+            return DtHolidayList;
+        }
 
+        public DataTable LoadHolidayZones()
+        {
+            string ProcedureName = "GetHolidayZones";
+            System.Data.DataTable DtZones = config.ExecuteReaderWithSPAsync(ProcedureName).Result;
+            return DtZones;
+        }
+
+        public DataTable LoadYears()
+        {
+            string ProcedureName = "GetYears";
+            System.Data.DataTable DtHSNNos = config.CentralExecuteReaderWithSPAsync(ProcedureName).Result;
+            return DtHSNNos;
+        }
+
+        public DataTable LoadTypeOfLeave(int Type)
+        {
+            string ProcedureName = "GetTypeOfLeave";
+            Hashtable HtTypeOfLevae = new Hashtable();
+            HtTypeOfLevae.Add("@Type", Type);
+            System.Data.DataTable DtLeaveTypeMaster = config.ExecuteReaderWithSPAsync(ProcedureName).Result;
+            return DtLeaveTypeMaster;
+        }
+
+        public DataTable Load_LeaveEmpNames(string EmpIdPrefix, DataTable BranchID, int type)
+        {
+            string ProcedureName = "GetLeaveEmpNames";
+            Hashtable HtEmpNames = new Hashtable();
+            HtEmpNames.Add("@EmpidPrefix", EmpIdPrefix);
+            HtEmpNames.Add("@Branch", BranchID);
+            HtEmpNames.Add("@type", type);
+            System.Data.DataTable DtEmpNames = config.ExecuteAdaptorAsyncWithParams(ProcedureName, HtEmpNames).Result;
+            return DtEmpNames;
+        }
+        public DataTable LoadBranchOnUserID(string Branch)
+        {
+            List<string> list = Branch.Split(',').ToList();
+            DataTable dtBranch = new DataTable();
+            dtBranch.Columns.Add("Branch");
+            if (list.Count != 0)
+            {
+                foreach (string s in list)
+                {
+                    DataRow row = dtBranch.NewRow();
+                    row["Branch"] = s;
+                    dtBranch.Rows.Add(row);
+                }
+            }
+
+            return dtBranch;
+        }
 
     }
 

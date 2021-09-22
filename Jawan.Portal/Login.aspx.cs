@@ -54,6 +54,8 @@ namespace Jawan.Portal
                 Session["GRVPrefix"] = string.Empty;
                 Session["DCPrefix"] = string.Empty;
                 Session["BranchID"] = string.Empty;
+                Session["BranchIDHome"] = string.Empty;
+                Session["HomeBranch"] = string.Empty;
             }
           
             
@@ -126,6 +128,8 @@ namespace Jawan.Portal
                     Session["UserId"] = DtCheckCredentials.Rows[0]["username"].ToString();
                     Session["BranchID"] = DtCheckCredentials.Rows[0]["CompanyBranch"].ToString();
                     Session["AccessLevel"] = DtCheckCredentials.Rows[0]["previligeid"].ToString();
+                    Session["BranchIDHome"] = DtCheckCredentials.Rows[0]["CompanyBranch"].ToString();
+                    Session["HomeBranch"] = DtCheckCredentials.Rows[0]["CompanyBranch"].ToString();
                     GetBranchwise();
 
 
@@ -250,6 +254,8 @@ namespace Jawan.Portal
                 Session["GRVPrefix"] = DtBranchPrefix.Rows[0]["GRVPrefix"].ToString();
                 Session["DCPrefix"] = DtBranchPrefix.Rows[0]["DCPrefix"].ToString();
                 Session["BranchID"] = DtBranchPrefix.Rows[0]["BranchID"].ToString();
+                Session["BranchIDHome"] = DtBranchPrefix.Rows[0]["BranchID"].ToString();
+                Session["HomeBranch"] = DtBranchPrefix.Rows[0]["BranchID"].ToString();
             }
         }  
             

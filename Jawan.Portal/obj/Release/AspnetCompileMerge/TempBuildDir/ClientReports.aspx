@@ -224,7 +224,10 @@
 
                         <li><a href="PinMyVisits.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Pin My Visits</span> </a></li>
 
-
+                        <li><a href="AddHolidaysList.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Add Holidays List</span> </a></li>
+                        <li><a href="LeaveBalance_HistoryReport.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Leave Balance & History Report</span> </a></li>
+                        <li><a href="LeaveHolidayListReport.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Holidays List Report</span> </a></li>
+                        <li><a href="LeaveSetUpGrid.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Leave Set Up</span> </a></li>
                     </ul>
                     <div class="clear">
                     </div>

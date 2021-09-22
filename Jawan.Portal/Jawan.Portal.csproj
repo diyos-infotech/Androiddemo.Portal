@@ -119,15 +119,21 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AddHolidaysList.aspx" />
     <Content Include="AndroidEmployee.aspx" />
+    <Content Include="assets\chosen-sprite.png" />
     <Content Include="ClientManPowerReq.aspx" />
     <Content Include="css\assets\clmanicon.png" />
     <Content Include="css\assets\DeleteIcon.png" />
     <Content Include="css\Marketing.css" />
+    <Content Include="EmployeeLeaveSetUp.aspx" />
     <Content Include="EmpShiftDetails.aspx" />
     <Content Include="GetDaywise_Android_Attendance.aspx" />
     <Content Include="ImportRoster.aspx" />
     <Content Include="LeadsReport.aspx" />
+    <Content Include="LeaveBalance_HistoryReport.aspx" />
+    <Content Include="LeaveHolidayListReport.aspx" />
+    <Content Include="LeaveSetUpGrid.aspx" />
     <Content Include="Marketing_Images\actionlog.png" />
     <Content Include="Marketing_Images\AddIcon.png" />
     <Content Include="Marketing_Images\calendar.png" />
@@ -137,6 +143,7 @@
     <Content Include="Marketing_Images\ui-bg_glass_80_d7ebf9_1x400.png" />
     <Content Include="Marketing_Images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
     <Content Include="MKTG_Reports.aspx" />
+    <Content Include="ModifyEmpLeaveSetUp.aspx" />
     <Content Include="MonthlyReport.aspx" />
     <Content Include="M_Action_Log.aspx" />
     <Content Include="M_AddingSourceofLeads.aspx" />
@@ -1417,6 +1424,13 @@
     <Compile Include="AddEmployee.aspx.designer.cs">
       <DependentUpon>AddEmployee.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AddHolidaysList.aspx.cs">
+      <DependentUpon>AddHolidaysList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddHolidaysList.aspx.designer.cs">
+      <DependentUpon>AddHolidaysList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddNewItem.aspx.cs">
       <DependentUpon>AddNewItem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1878,6 +1892,13 @@
     <Compile Include="EmployeeForms.aspx.designer.cs">
       <DependentUpon>EmployeeForms.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EmployeeLeaveSetUp.aspx.cs">
+      <DependentUpon>EmployeeLeaveSetUp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmployeeLeaveSetUp.aspx.designer.cs">
+      <DependentUpon>EmployeeLeaveSetUp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EmployeePayments.aspx.cs">
       <DependentUpon>EmployeePayments.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2277,6 +2298,27 @@
     <Compile Include="LeadsReport.aspx.designer.cs">
       <DependentUpon>LeadsReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LeaveBalance_HistoryReport.aspx.cs">
+      <DependentUpon>LeaveBalance_HistoryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LeaveBalance_HistoryReport.aspx.designer.cs">
+      <DependentUpon>LeaveBalance_HistoryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveHolidayListReport.aspx.cs">
+      <DependentUpon>LeaveHolidayListReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LeaveHolidayListReport.aspx.designer.cs">
+      <DependentUpon>LeaveHolidayListReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveSetUpGrid.aspx.cs">
+      <DependentUpon>LeaveSetUpGrid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LeaveSetUpGrid.aspx.designer.cs">
+      <DependentUpon>LeaveSetUpGrid.aspx</DependentUpon>
+    </Compile>
     <Compile Include="LicenceDetailsReports.aspx.cs">
       <DependentUpon>LicenceDetailsReports.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2416,6 +2458,13 @@
     </Compile>
     <Compile Include="ModifyCompanyInfo.aspx.designer.cs">
       <DependentUpon>ModifyCompanyInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ModifyEmpLeaveSetUp.aspx.cs">
+      <DependentUpon>ModifyEmpLeaveSetUp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ModifyEmpLeaveSetUp.aspx.designer.cs">
+      <DependentUpon>ModifyEmpLeaveSetUp.aspx</DependentUpon>
     </Compile>
     <Compile Include="ModifyEmployee.aspx.cs">
       <DependentUpon>ModifyEmployee.aspx</DependentUpon>
