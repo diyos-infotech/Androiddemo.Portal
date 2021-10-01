@@ -443,7 +443,7 @@ namespace Jawan.Portal
 
         private void AndroidEmpid()
         {
-            string query = "select empid from Empdetails_Android where isnull(EmpAndroidStatus,0)=0 order by empid";
+            string query = "select empid from Empdetails_Android where isnull(EmpAndroidStatus,0)=0 and isnull(EmpRejectStatus,0) =0 order by empid";
             DataTable dtemp = config.ExecuteAdaptorAsyncWithQueryParams(query).Result;
             if (dtemp.Rows.Count > 0)
             {
@@ -1200,6 +1200,22 @@ namespace Jawan.Portal
 
                 string path = "";
 
+                #region Vaccination done by Mahesh Goud on 2021-09-23
+                var VaccinationDose = "";
+                var VaccinationType = "";
+                var VaccinationDate = string.Empty;
+                if (txtVaccinationdate.Text.Trim().Length != 0)
+                {
+                    VaccinationDate = Timings.Instance.CheckDateFormat(txtVaccinationdate.Text);
+                }
+                else
+                {
+                    VaccinationDate = "01/01/1900";
+                }
+                VaccinationDose = ddlVaccinationDose.SelectedValue;
+                VaccinationType = ddlVaccinationType.SelectedValue;
+                #endregion
+
                 #region  Begin   Variable Declaration   as on  [18-09-2013]
                 #region  Begin  1 to 5    Empid to Gender
                 var Empstatus = 0;
@@ -1879,6 +1895,8 @@ namespace Jawan.Portal
 
                 #endregion Begin salary tab
 
+                
+
                 #region  Begin Stored Procedure Parameters  as  on [18-09-2013]
                 Hashtable AddEmpdetails = new Hashtable();
                 string AddEmpdetailsPName = "AddEmpDetails";
@@ -1905,6 +1923,9 @@ namespace Jawan.Portal
                 cmd.Parameters.Add("@EmpSex", EmpSex);
                 cmd.Parameters.Add("@Gross", Gross);
 
+                cmd.Parameters.Add("@VaccinationDose", VaccinationDose);
+                cmd.Parameters.Add("@VaccinationType", VaccinationType);
+                cmd.Parameters.Add("@VaccinationDate", VaccinationDate);
                 #endregion End  Parameters  From Empid To Gender
 
                 #region Begin Parameters  Marital Status To Date Of Leaving
@@ -3072,7 +3093,7 @@ namespace Jawan.Portal
             txtEmID.ReadOnly = true;
             txtEmpFName.Text = txtEmpmiName.Text = txtEmplname.Text = txtEmpDtofBirth.Text = txtEmpDtofInterview.Text = txtEmpDtofJoining.Text = txtDofleaving.Text = txtMotherName.Text = txtFatherName.Text = txtfatheroccupation.Text = txtSpousName.Text = txtShiftstarttime.Text = txtShiftEndtime.Text = "";
             rdbactive.Checked = rdbmale.Checked = rdbmarried.Checked = ChkESIDed.Checked = ChkPFDed.Checked = ChkPTDed.Checked = rdur.Checked = rdbNotVerified.Checked = true;
-            txtQualification.Text = txtPreEmp.Text = txtbirthplace.Text =
+            txtQualification.Text = txtPreEmp.Text = txtbirthplace.Text =txtVaccinationdate.Text=
             txtmtongue.Text = txtPhone.Text = txoldempid.Text = txtnationality.Text = txtreligion.Text = txtGrossSalary.Text = txtLangKnown.Text = txtemail.Text = txtpsaraempcode.Text = TxtIDCardIssuedDt.Text = TxtIdCardValid.Text = txtGrossSalary.Text = txtEmergContNo.Text = string.Empty;
             rdbfemale.Checked = rdbTransgender.Checked = rdbsingle.Checked = rdbWidower.Checked = rdbdivorcee.Checked = false;
             ddlDesignation.SelectedIndex = DdlPreferedUnit.SelectedIndex = ddlReportingMgr.SelectedIndex = ddlTitle.SelectedIndex = ddlBranch.SelectedIndex = ddlShift.SelectedIndex = DdlPreferedUnit.SelectedIndex = ddlWoff1.SelectedIndex = ddlWoff2.SelectedIndex = 0;
@@ -3099,7 +3120,7 @@ namespace Jawan.Portal
             txtEmpInsNominee.Text = txtBankCardRef.Text = txtSSNumber.Text = txtInsDeb.Text = txtSSNumber.Text = txtEmpNomRel.Text =
             txtEmpPFNumber.Text = txtPFNominee.Text = txtCmpShortName.Text = txtPFNomineeRel.Text = txtESINum.Text = txtESINominee.Text =
             txtESIDiSName.Text = txtaadhaar.Text = txtESINomRel.Text = txtInsCover.Text = txtaddlamt.Text = txtfoodallowance.Text = string.Empty;
-            ddlbankname.SelectedIndex = DdlStates.SelectedIndex = 0;
+            ddlbankname.SelectedIndex = DdlStates.SelectedIndex=ddlVaccinationDose.SelectedIndex=ddlVaccinationType.SelectedIndex = 0;
 
 
             Chkother.Checked = ChkAadharCard.Checked = ChkBankPassbook.Checked = ChkdrivingLicense.Checked = ChkPanCard.Checked = ChkVoterID.Checked = ChkElectricityBill.Checked = ChkESICCard.Checked = ChkRationCard.Checked = false;
@@ -4795,21 +4816,41 @@ namespace Jawan.Portal
                 HashtableIOM.Add("@EMPID", EMPID);
                 DataTable dt = config.ExecuteAdaptorAsyncWithParams(SPNAME, HashtableIOM).Result;
 
-                bool c = false;
-                if (String.IsNullOrEmpty(dt.Rows[0]["EmpStatus"].ToString()) == false)
+                rdbactive.Checked = true;
+
+                #region Vaccination done by Mahesh Goud on 2021-09-23
+                if (dt.Rows[0]["VaccinationType"].ToString() == "")
                 {
-                    c = Convert.ToBoolean(dt.Rows[0]["EmpStatus"].ToString());
+                    ddlVaccinationType.SelectedIndex = 0;
                 }
-                if (c == true)
+                else
                 {
-                    rdbactive.Checked = true;
+                    ddlVaccinationType.SelectedValue = dt.Rows[0]["VaccinationType"].ToString();
+                }
+                if (dt.Rows[0]["VaccinationDose"].ToString() == "")
+                {
+                    ddlVaccinationDose.SelectedIndex = 0;
+                }
+                else
+                {
+                    ddlVaccinationDose.SelectedValue = dt.Rows[0]["VaccinationDose"].ToString();
+                }
+                if (String.IsNullOrEmpty(dt.Rows[0]["VaccinationDate"].ToString()) == false)
+                {
+
+                    txtVaccinationdate.Text = DateTime.Parse(dt.Rows[0]["VaccinationDate"].ToString()).ToString("dd/MM/yyyy");
+                    if (txtVaccinationdate.Text == "01/01/1900")
+                    {
+                        txtVaccinationdate.Text = "";
+                    }
 
                 }
                 else
                 {
-                    rdbResigned.Checked = true;
+                    txtVaccinationdate.Text = "";
 
                 }
+                #endregion
 
                 string Employeetype = dt.Rows[0]["Employeetype"].ToString();
                 if (Employeetype == "G")
@@ -4831,6 +4872,8 @@ namespace Jawan.Portal
                 txtEmpFName.Text = dt.Rows[0]["EmpFName"].ToString();
                 txtEmpmiName.Text = dt.Rows[0]["EmpMName"].ToString();
                 txtEmplname.Text = dt.Rows[0]["EmpLName"].ToString();
+                txtFatherName.Text= dt.Rows[0]["EmpFatherName"].ToString();
+                txtMotherName.Text= dt.Rows[0]["EmpMotherName"].ToString();
                 string MaritalStatus = dt.Rows[0]["EmpMaritalStatus"].ToString();
                 if (MaritalStatus == "M")
                 {
@@ -5057,61 +5100,80 @@ namespace Jawan.Portal
                     TxtIdCardValid.Text = "";
 
                 }
+                string imagequery = "select image from profileimage where emp_id='" + empid + "'";
+                DataTable dtimage = config.ExecuteAdaptorAsyncWithQueryParams(imagequery).Result;
 
-                using (var client = new System.Net.WebClient())
+                if (dtimage.Rows.Count > 0)
                 {
-                    string Str = empid + "Photo.jpg";
-                    string remoteUri = "http://gdxmobileapp.mydiyosfame.com/";
-
-                    string fileName = "";
-
-                    if (dt.Rows[0]["Image"].ToString().Length > 0)
+                    string imageUrl;
+                    if (dtimage.Rows[0]["Image"].ToString().StartsWith("data"))
                     {
-                        fileName = dt.Rows[0]["Image"].ToString();
-                    }
-
-                    client.DownloadFile(remoteUri + fileName, Server.MapPath("~/assets/EmpPhotos/") + Str);
-
-                    if (File.Exists(Server.MapPath("~/assets/EmpPhotos/") + Str))
-                    {
-                        Imageempphoto.ImageUrl = ("~/assets/EmpPhotos/") + Str;
+                        imageUrl = dtimage.Rows[0]["Image"].ToString();
                     }
                     else
                     {
-                        Imageempphoto.ImageUrl = null;
+                        imageUrl = "data:image/jpeg;base64," + dtimage.Rows[0]["Image"].ToString();
+                    }
+                    if (dtimage.Rows[0]["Image"].ToString().Length > 0)
+                    {
+                        Imageempphoto.ImageUrl = imageUrl;
                     }
 
                 }
+                //using (var client = new System.Net.WebClient())
+                //{
+                //    string Str = empid + "Photo.jpg";
+                //    string remoteUri = "http:/gdxmobileapp.mydiyosfame.com/";
+
+                //    string fileName = "";
+
+                //    if (dt.Rows[0]["Image"].ToString().Length > 0)
+                //    {
+                //        fileName = dt.Rows[0]["Image"].ToString();
+                //    }
+
+                //    client.DownloadFile(remoteUri + fileName, Server.MapPath("~/assets/EmpPhotos/") + Str);
+
+                //    if (File.Exists(Server.MapPath("~/assets/EmpPhotos/") + Str))
+                //    {
+                //        Imageempphoto.ImageUrl = ("~/assets/EmpPhotos/") + Str;
+                //    }
+                //    else
+                //    {
+                //        Imageempphoto.ImageUrl = null;
+                //    }
+
+                //}
 
 
-                using (var client = new System.Net.WebClient())
-                {
-                    string Str = empid + "Sign.jpg";
-                    string remoteUri = "http://gdxmobileapp.mydiyosfame.com/";
+                //using (var client = new System.Net.WebClient())
+                //{
+                //    string Str = empid + "Sign.jpg";
+                //    string remoteUri = "http:/gdxmobileapp.mydiyosfame.com/";
 
-                    string fileName = "";
+                //    string fileName = "";
 
-                    if (dt.Rows[0]["EmpSign"].ToString().Length > 0)
-                    {
-                        fileName = dt.Rows[0]["EmpSign"].ToString();
+                //    if (dt.Rows[0]["EmpSign"].ToString().Length > 0)
+                //    {
+                //        fileName = dt.Rows[0]["EmpSign"].ToString();
 
-                        client.DownloadFile(remoteUri + fileName, Server.MapPath("~/assets/Empsign/") + Str);
+                //        client.DownloadFile(remoteUri + fileName, Server.MapPath("~/assets/Empsign/") + Str);
 
-                        if (File.Exists(Server.MapPath("~/assets/Empsign/") + Str))
-                        {
-                            ImageSign.ImageUrl = ("~/assets/Empsign/") + Str;
-                        }
-                        else
-                        {
-                            ImageSign.ImageUrl = null;
-                        }
-                    }
-                    else
-                    {
-                        ImageSign.ImageUrl = null;
-                    }
+                //        if (File.Exists(Server.MapPath("~/assets/Empsign/") + Str))
+                //        {
+                //            ImageSign.ImageUrl = ("~/assets/Empsign/") + Str;
+                //        }
+                //        else
+                //        {
+                //            ImageSign.ImageUrl = null;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ImageSign.ImageUrl = null;
+                //    }
 
-                }
+                //}
 
 
                 //txtBirthDistrict.Text = dt.Rows[0]["BirthDistrict"].ToString();
@@ -5546,495 +5608,495 @@ namespace Jawan.Portal
                     //    txtDOFDischarge.Text = "";
                     //}
                 }
-                    string SqlPoliceRecord = "Select * from EmpPoliceRecord where empid='" + empid + "'";
-                    DataTable dtpr = config.ExecuteAdaptorAsyncWithQueryParams(SqlPoliceRecord).Result;
+                string SqlPoliceRecord = "Select * from EmpPoliceRecord where empid='" + empid + "'";
+                DataTable dtpr = config.ExecuteAdaptorAsyncWithQueryParams(SqlPoliceRecord).Result;
 
-                    var CriminalOffCheck = "N";
-                    var CriminalProCheck = "N";
-                    var CriminalArrestCheck = "N";
-                    var PoliceVerificationCheck = "N";
+                var CriminalOffCheck = "N";
+                var CriminalProCheck = "N";
+                var CriminalArrestCheck = "N";
+                var PoliceVerificationCheck = "N";
 
-                    if (dtpr.Rows.Count > 0)
+                if (dtpr.Rows.Count > 0)
+                {
+
+                    PoliceVerificationCheck = dtpr.Rows[0]["PoliceVerificationCheck"].ToString();
+                    if (PoliceVerificationCheck == "Y")
                     {
+                        rdbVerified.Checked = true;
+                        txtPoliceVerificationNo.Text = dtpr.Rows[0]["PoliceVerificationNo"].ToString();
+                        txtPoliceVerificationNo.Enabled = true;
+                        rdbNotVerified.Checked = false;
+                    }
+                    else
+                    {
+                        rdbNotVerified.Checked = true;
+                        rdbVerified.Checked = false;
+                        txtPoliceVerificationNo.Enabled = false;
+                    }
 
-                        PoliceVerificationCheck = dtpr.Rows[0]["PoliceVerificationCheck"].ToString();
-                        if (PoliceVerificationCheck == "Y")
-                        {
-                            rdbVerified.Checked = true;
-                            txtPoliceVerificationNo.Text = dtpr.Rows[0]["PoliceVerificationNo"].ToString();
-                            txtPoliceVerificationNo.Enabled = true;
-                            rdbNotVerified.Checked = false;
-                        }
-                        else
-                        {
-                            rdbNotVerified.Checked = true;
-                            rdbVerified.Checked = false;
-                            txtPoliceVerificationNo.Enabled = false;
-                        }
+                    CriminalOffCheck = dtpr.Rows[0]["CriminalOffCheck"].ToString();
+                    if (CriminalOffCheck == "Y")
+                    {
+                        ChkCriminalOff.Checked = true;
+                        txtCriminalOffcaseNo.Enabled = true;
+                        txtCriminalOffcaseNo.Text = dtpr.Rows[0]["CriminalOffcaseNo"].ToString();
+                        txtCriminalOffCName.Enabled = true;
+                        txtCriminalOffCName.Text = dtpr.Rows[0]["CriminalOffCName"].ToString();
+                        txtCriminalOff.Enabled = true;
+                        txtCriminalOff.Text = dtpr.Rows[0]["CriminalOff"].ToString();
+                    }
+                    else
+                    {
+                        ChkCriminalOff.Checked = false;
+                        txtCriminalOffcaseNo.Enabled = false;
+                        txtCriminalOffCName.Enabled = false;
+                        txtCriminalOff.Enabled = false;
+                    }
 
-                        CriminalOffCheck = dtpr.Rows[0]["CriminalOffCheck"].ToString();
-                        if (CriminalOffCheck == "Y")
-                        {
-                            ChkCriminalOff.Checked = true;
-                            txtCriminalOffcaseNo.Enabled = true;
-                            txtCriminalOffcaseNo.Text = dtpr.Rows[0]["CriminalOffcaseNo"].ToString();
-                            txtCriminalOffCName.Enabled = true;
-                            txtCriminalOffCName.Text = dtpr.Rows[0]["CriminalOffCName"].ToString();
-                            txtCriminalOff.Enabled = true;
-                            txtCriminalOff.Text = dtpr.Rows[0]["CriminalOff"].ToString();
-                        }
-                        else
-                        {
-                            ChkCriminalOff.Checked = false;
-                            txtCriminalOffcaseNo.Enabled = false;
-                            txtCriminalOffCName.Enabled = false;
-                            txtCriminalOff.Enabled = false;
-                        }
+                    CriminalProCheck = dtpr.Rows[0]["CriminalProCheck"].ToString();
+                    if (CriminalProCheck == "Y")
+                    {
+                        ChkCriminalProc.Checked = true;
+                        txtCriminalProCaseNo.Enabled = true;
+                        txtCriminalProCaseNo.Text = dtpr.Rows[0]["CriminalProCaseNo"].ToString();
+                        txtCriminalProCName.Enabled = true;
+                        txtCriminalProCName.Text = dtpr.Rows[0]["CriminalProCName"].ToString();
+                        txtCriminalProOffence.Enabled = true;
+                        txtCriminalProOffence.Text = dtpr.Rows[0]["CriminalProOffence"].ToString();
 
-                        CriminalProCheck = dtpr.Rows[0]["CriminalProCheck"].ToString();
-                        if (CriminalProCheck == "Y")
-                        {
-                            ChkCriminalProc.Checked = true;
-                            txtCriminalProCaseNo.Enabled = true;
-                            txtCriminalProCaseNo.Text = dtpr.Rows[0]["CriminalProCaseNo"].ToString();
-                            txtCriminalProCName.Enabled = true;
-                            txtCriminalProCName.Text = dtpr.Rows[0]["CriminalProCName"].ToString();
-                            txtCriminalProOffence.Enabled = true;
-                            txtCriminalProOffence.Text = dtpr.Rows[0]["CriminalProOffence"].ToString();
+                    }
+                    else
+                    {
+                        ChkCriminalProc.Checked = false;
+                        txtCriminalProCaseNo.Enabled = false;
+                        txtCriminalProCName.Enabled = false;
+                        txtCriminalProOffence.Enabled = false;
+                    }
 
-                        }
-                        else
-                        {
-                            ChkCriminalProc.Checked = false;
-                            txtCriminalProCaseNo.Enabled = false;
-                            txtCriminalProCName.Enabled = false;
-                            txtCriminalProOffence.Enabled = false;
-                        }
+                    CriminalArrestCheck = dtpr.Rows[0]["CriminalArrestCheck"].ToString();
+                    if (CriminalArrestCheck == "Y")
+                    {
+                        ChkCrimalArrest.Checked = true;
+                        txtCriminalArrestCaseNo.Enabled = true;
+                        txtCriminalArrestCaseNo.Text = dtpr.Rows[0]["CriminalArrestCaseNo"].ToString();
+                        txtCriminalArrestCName.Enabled = true;
+                        txtCriminalArrestCName.Text = dtpr.Rows[0]["CriminalArrestCName"].ToString();
+                        txtCriminalArrestOffence.Enabled = true;
+                        txtCriminalArrestOffence.Text = dtpr.Rows[0]["CriminalArrestOffence"].ToString();
 
-                        CriminalArrestCheck = dtpr.Rows[0]["CriminalArrestCheck"].ToString();
-                        if (CriminalArrestCheck == "Y")
-                        {
-                            ChkCrimalArrest.Checked = true;
-                            txtCriminalArrestCaseNo.Enabled = true;
-                            txtCriminalArrestCaseNo.Text = dtpr.Rows[0]["CriminalArrestCaseNo"].ToString();
-                            txtCriminalArrestCName.Enabled = true;
-                            txtCriminalArrestCName.Text = dtpr.Rows[0]["CriminalArrestCName"].ToString();
-                            txtCriminalArrestOffence.Enabled = true;
-                            txtCriminalArrestOffence.Text = dtpr.Rows[0]["CriminalArrestOffence"].ToString();
-
-                        }
-                        else
-                        {
-                            ChkCrimalArrest.Checked = false;
-                            txtCriminalArrestCaseNo.Enabled = false;
-                            txtCriminalArrestCName.Enabled = false;
-                            txtCriminalArrestOffence.Enabled = false;
-                        }
-
-
+                    }
+                    else
+                    {
+                        ChkCrimalArrest.Checked = false;
+                        txtCriminalArrestCaseNo.Enabled = false;
+                        txtCriminalArrestCName.Enabled = false;
+                        txtCriminalArrestOffence.Enabled = false;
                     }
 
 
+                }
 
-                    string SqlProofDetails = "Select * from EmpProofDetails_Android where empid='" + empid + "'";
-                    DataTable dtpd = config.ExecuteAdaptorAsyncWithQueryParams(SqlProofDetails).Result;
 
-                    var AadharCard = "N";
-                    var drivingLicense = "N";
-                    var VoterID = "N";
-                    var ElectricityBill = "N";
-                    var BankPassbook = "N";
-                    var RationCard = "N";
-                    var PanCard = "N";
-                    var Other = "N";
-                    var SSC = "N";
-                    if (dtpd.Rows.Count > 0)
+
+                string SqlProofDetails = "Select * from EmpProofDetails_Android where empid='" + empid + "'";
+                DataTable dtpd = config.ExecuteAdaptorAsyncWithQueryParams(SqlProofDetails).Result;
+
+                var AadharCard = "N";
+                var drivingLicense = "N";
+                var VoterID = "N";
+                var ElectricityBill = "N";
+                var BankPassbook = "N";
+                var RationCard = "N";
+                var PanCard = "N";
+                var Other = "N";
+                var SSC = "N";
+                if (dtpd.Rows.Count > 0)
+                {
+
+                    using (var client = new System.Net.WebClient())
                     {
+                        string Str = empid + "AadharFrontPhoto.jpg";
+                        string remoteUri = "http://gdxmobileapp.mydiyosfame.com/";
 
-                        using (var client = new System.Net.WebClient())
+                        string fileName = "";
+
+                        if (dtpd.Rows[0]["AadharCardImg"].ToString().Length > 0)
                         {
-                            string Str = empid + "AadharFrontPhoto.jpg";
-                            string remoteUri = "http://gdxmobileapp.mydiyosfame.com/";
+                            fileName = dtpd.Rows[0]["AadharCardImg"].ToString();
 
-                            string fileName = "";
 
-                            if (dtpd.Rows[0]["AadharCardImg"].ToString().Length > 0)
+                            client.DownloadFile(remoteUri + fileName, Server.MapPath("~/assets/EmpPhotos/") + Str);
+
+                            if (File.Exists(Server.MapPath("~/assets/EmpPhotos/") + Str))
                             {
-                                fileName = dtpd.Rows[0]["AadharCardImg"].ToString();
-
-
-                                client.DownloadFile(remoteUri + fileName, Server.MapPath("~/assets/EmpPhotos/") + Str);
-
-                                if (File.Exists(Server.MapPath("~/assets/EmpPhotos/") + Str))
-                                {
-                                    AadharImg.ImageUrl = ("~/assets/EmpPhotos/") + Str;
-                                }
-                                else
-                                {
-                                    AadharImg.ImageUrl = null;
-                                }
+                                AadharImg.ImageUrl = ("~/assets/EmpPhotos/") + Str;
                             }
                             else
                             {
                                 AadharImg.ImageUrl = null;
                             }
                         }
-
-                        AadharCard = dtpd.Rows[0]["AadharCard"].ToString();
-                        txtAadharCard.Text = dtpd.Rows[0]["AadharCardNo"].ToString();
-
-                        drivingLicense = dtpd.Rows[0]["drivingLicense"].ToString();
-                        txtDrivingLicense.Text = dtpd.Rows[0]["drivingLicenseNo"].ToString();
-
-                        VoterID = dtpd.Rows[0]["VoterID"].ToString();
-                        txtVoterID.Text = dtpd.Rows[0]["VoterIDNo"].ToString();
-
-                        RationCard = dtpd.Rows[0]["RationCard"].ToString();
-                        txtRationCard.Text = dtpd.Rows[0]["RationCardNo"].ToString();
-
-                        PanCard = dtpd.Rows[0]["PanCard"].ToString();
-                        txtPanCard.Text = dtpd.Rows[0]["PanCardNo"].ToString();
-
-                        BankPassbook = dtpd.Rows[0]["Passbook"].ToString();
-                        txtBankPassbook.Text = dtpd.Rows[0]["PassbookNo"].ToString();
-
-                        ElectricityBill = dtpd.Rows[0]["ElectricityBill"].ToString();
-                        txtElectricityBill.Text = dtpd.Rows[0]["ElectricityBillNo"].ToString();
-
-                        Other = dtpd.Rows[0]["Others"].ToString();
-                        txtOther.Text = dtpd.Rows[0]["OtherType"].ToString();
-
-                        SSC = dtpd.Rows[0]["SSC"].ToString();
-                        txtsscno.Text = dtpd.Rows[0]["SSCNo"].ToString();
-
-                        if (AadharCard == "Y")
-                        {
-                            ChkAadharCard.Checked = true;
-                            txtAadharCard.Enabled = true;
-                        }
                         else
                         {
-                            ChkAadharCard.Checked = false;
-                            txtAadharCard.Enabled = false;
+                            AadharImg.ImageUrl = null;
                         }
-
-                        if (drivingLicense == "Y")
-                        {
-                            ChkdrivingLicense.Checked = true;
-                            txtDrivingLicense.Enabled = true;
-                        }
-                        else
-                        {
-                            ChkdrivingLicense.Checked = false;
-                            txtDrivingLicense.Enabled = false;
-                        }
-
-                        if (VoterID == "Y")
-                        {
-                            ChkVoterID.Checked = true;
-                            txtVoterID.Enabled = true;
-                        }
-                        else
-                        {
-                            ChkVoterID.Checked = false;
-                            txtVoterID.Enabled = false;
-                        }
-
-                        if (RationCard == "Y")
-                        {
-                            ChkRationCard.Checked = true;
-                            txtRationCard.Enabled = true;
-                        }
-                        else
-                        {
-                            ChkRationCard.Checked = false;
-                            txtRationCard.Enabled = false;
-                        }
-
-                        if (PanCard == "Y")
-                        {
-                            ChkPanCard.Checked = true;
-                            txtPanCard.Enabled = true;
-                        }
-                        else
-                        {
-                            ChkPanCard.Checked = false;
-                            txtPanCard.Enabled = false;
-                        }
-
-
-                        if (BankPassbook == "Y")
-                        {
-                            ChkBankPassbook.Checked = true;
-                            txtBankPassbook.Enabled = true;
-                        }
-                        else
-                        {
-                            ChkBankPassbook.Checked = false;
-                            txtBankPassbook.Enabled = false;
-                        }
-
-                        if (ElectricityBill == "Y")
-                        {
-                            ChkElectricityBill.Checked = true;
-                            txtElectricityBill.Enabled = true;
-                        }
-                        else
-                        {
-                            ChkElectricityBill.Checked = false;
-                            txtElectricityBill.Enabled = false;
-                        }
-
-                        if (Other == "Y")
-                        {
-                            Chkother.Checked = true;
-                            txtOther.Enabled = true;
-                        }
-                        else
-                        {
-                            Chkother.Checked = false;
-                            txtOther.Enabled = false;
-                        }
-
-                        if (SSC == "Y")
-                        {
-                            ChkSSC.Checked = true;
-                            txtsscno.Enabled = true;
-                        }
-
-                        else
-                        {
-                            ChkSSC.Checked = false;
-                            txtsscno.Enabled = false;
-                        }
-
-
                     }
 
+                    AadharCard = dtpd.Rows[0]["AadharCard"].ToString();
+                    txtAadharCard.Text = dtpd.Rows[0]["AadharCardNo"].ToString();
 
-                    string sqlFamilyDetails = "select ER.RName,ER.RType,ER.EmpId,Convert(nvarchar(10),ER.DOfBirth,103) as DOfBirth,ER.pfnominee,ER.Esinominee,ER.age,ER.ROccupation,ER.RResidence,ER.RPlace,ER.RPhone,ER.RGMail from EmpRelationships as ER join EmpDetails as ED on ER.EmpId=ED.EmpId where ED.EmpID = '" + empid + "' ";
-                    DataTable dtfm = config.ExecuteAdaptorAsyncWithQueryParams(sqlFamilyDetails).Result;
-                    if (dtfm.Rows.Count > 0)
+                    drivingLicense = dtpd.Rows[0]["drivingLicense"].ToString();
+                    txtDrivingLicense.Text = dtpd.Rows[0]["drivingLicenseNo"].ToString();
+
+                    VoterID = dtpd.Rows[0]["VoterID"].ToString();
+                    txtVoterID.Text = dtpd.Rows[0]["VoterIDNo"].ToString();
+
+                    RationCard = dtpd.Rows[0]["RationCard"].ToString();
+                    txtRationCard.Text = dtpd.Rows[0]["RationCardNo"].ToString();
+
+                    PanCard = dtpd.Rows[0]["PanCard"].ToString();
+                    txtPanCard.Text = dtpd.Rows[0]["PanCardNo"].ToString();
+
+                    BankPassbook = dtpd.Rows[0]["Passbook"].ToString();
+                    txtBankPassbook.Text = dtpd.Rows[0]["PassbookNo"].ToString();
+
+                    ElectricityBill = dtpd.Rows[0]["ElectricityBill"].ToString();
+                    txtElectricityBill.Text = dtpd.Rows[0]["ElectricityBillNo"].ToString();
+
+                    Other = dtpd.Rows[0]["Others"].ToString();
+                    txtOther.Text = dtpd.Rows[0]["OtherType"].ToString();
+
+                    SSC = dtpd.Rows[0]["SSC"].ToString();
+                    txtsscno.Text = dtpd.Rows[0]["SSCNo"].ToString();
+
+                    if (AadharCard == "Y")
                     {
-                        gvFamilyDetails.DataSource = dtfm;
-                        gvFamilyDetails.DataBind();
-
-                        foreach (GridViewRow dr in gvFamilyDetails.Rows)
-                        {
-                            if (dtfm.Rows.Count == dr.RowIndex)
-                            {
-                                break;
-                            }
-                            TextBox txtEmpRName = dr.FindControl("txtEmpName") as TextBox;
-                            DropDownList ddlRelationtype = dr.FindControl("ddlRelation") as DropDownList;
-                            TextBox txtDOFBirth = dr.FindControl("txtRelDtofBirth") as TextBox;
-                            TextBox txtAge = dr.FindControl("txtAge") as TextBox;
-                            TextBox txtoccupation = dr.FindControl("txtReloccupation") as TextBox;
-                            TextBox txtrphone = dr.FindControl("txtRelphnno") as TextBox;
-                            TextBox txtrmail = dr.FindControl("txtRelmail") as TextBox;
-                            DropDownList ddlrelresidence = dr.FindControl("ddlresidence") as DropDownList;
-                            TextBox txtRelplace = dr.FindControl("txtplace") as TextBox;
-                            CheckBox ChkPfNominee = dr.FindControl("ChkPFNominee") as CheckBox;
-                            CheckBox ChkESINominee = dr.FindControl("ChkESINominee") as CheckBox;
-
-                            txtEmpRName.Text = dtfm.Rows[dr.RowIndex]["RName"].ToString();
-                            ddlRelationtype.SelectedValue = dtfm.Rows[dr.RowIndex]["RType"].ToString();
-                            txtDOFBirth.Text = dtfm.Rows[dr.RowIndex]["DOfBirth"].ToString();
-
-                            if (txtDOFBirth.Text == "01/01/1900")
-                            {
-                                txtDOFBirth.Text = "";
-                            }
-                            txtAge.Text = dtfm.Rows[dr.RowIndex]["Age"].ToString();
-                            txtoccupation.Text = dtfm.Rows[dr.RowIndex]["ROccupation"].ToString();
-                            txtrphone.Text = dtfm.Rows[dr.RowIndex]["RPhone"].ToString();
-                            txtrmail.Text = dtfm.Rows[dr.RowIndex]["RGMail"].ToString();
-                            ddlrelresidence.SelectedValue = dtfm.Rows[dr.RowIndex]["RResidence"].ToString();
-                            txtRelplace.Text = dtfm.Rows[dr.RowIndex]["RPlace"].ToString();
-                            string PFNominee = dtfm.Rows[dr.RowIndex]["PfNominee"].ToString();
-                            if (PFNominee == "Y")
-                            {
-                                ChkPfNominee.Checked = true;
-
-                            }
-                            else
-                            {
-                                ChkPfNominee.Checked = false;
-                            }
-                            string ESINominee = dtfm.Rows[dr.RowIndex]["EsiNominee"].ToString();
-                            if (ESINominee == "Y")
-                            {
-                                ChkESINominee.Checked = true;
-
-                            }
-                            else
-                            {
-                                ChkESINominee.Checked = false;
-                            }
-
-
-                        }
-
+                        ChkAadharCard.Checked = true;
+                        txtAadharCard.Enabled = true;
                     }
                     else
                     {
-                        for (int i = 0; i < gvFamilyDetails.Rows.Count; i++)
+                        ChkAadharCard.Checked = false;
+                        txtAadharCard.Enabled = false;
+                    }
+
+                    if (drivingLicense == "Y")
+                    {
+                        ChkdrivingLicense.Checked = true;
+                        txtDrivingLicense.Enabled = true;
+                    }
+                    else
+                    {
+                        ChkdrivingLicense.Checked = false;
+                        txtDrivingLicense.Enabled = false;
+                    }
+
+                    if (VoterID == "Y")
+                    {
+                        ChkVoterID.Checked = true;
+                        txtVoterID.Enabled = true;
+                    }
+                    else
+                    {
+                        ChkVoterID.Checked = false;
+                        txtVoterID.Enabled = false;
+                    }
+
+                    if (RationCard == "Y")
+                    {
+                        ChkRationCard.Checked = true;
+                        txtRationCard.Enabled = true;
+                    }
+                    else
+                    {
+                        ChkRationCard.Checked = false;
+                        txtRationCard.Enabled = false;
+                    }
+
+                    if (PanCard == "Y")
+                    {
+                        ChkPanCard.Checked = true;
+                        txtPanCard.Enabled = true;
+                    }
+                    else
+                    {
+                        ChkPanCard.Checked = false;
+                        txtPanCard.Enabled = false;
+                    }
+
+
+                    if (BankPassbook == "Y")
+                    {
+                        ChkBankPassbook.Checked = true;
+                        txtBankPassbook.Enabled = true;
+                    }
+                    else
+                    {
+                        ChkBankPassbook.Checked = false;
+                        txtBankPassbook.Enabled = false;
+                    }
+
+                    if (ElectricityBill == "Y")
+                    {
+                        ChkElectricityBill.Checked = true;
+                        txtElectricityBill.Enabled = true;
+                    }
+                    else
+                    {
+                        ChkElectricityBill.Checked = false;
+                        txtElectricityBill.Enabled = false;
+                    }
+
+                    if (Other == "Y")
+                    {
+                        Chkother.Checked = true;
+                        txtOther.Enabled = true;
+                    }
+                    else
+                    {
+                        Chkother.Checked = false;
+                        txtOther.Enabled = false;
+                    }
+
+                    if (SSC == "Y")
+                    {
+                        ChkSSC.Checked = true;
+                        txtsscno.Enabled = true;
+                    }
+
+                    else
+                    {
+                        ChkSSC.Checked = false;
+                        txtsscno.Enabled = false;
+                    }
+
+
+                }
+
+
+                string sqlFamilyDetails = "select ER.RName,ER.RType,ER.EmpId,Convert(nvarchar(10),ER.DOfBirth,103) as DOfBirth,ER.pfnominee,ER.Esinominee,ER.age,ER.ROccupation,ER.RResidence,ER.RPlace,ER.RPhone,ER.RGMail from EmpRelationships as ER join EmpDetails as ED on ER.EmpId=ED.EmpId where ED.EmpID = '" + empid + "' ";
+                DataTable dtfm = config.ExecuteAdaptorAsyncWithQueryParams(sqlFamilyDetails).Result;
+                if (dtfm.Rows.Count > 0)
+                {
+                    gvFamilyDetails.DataSource = dtfm;
+                    gvFamilyDetails.DataBind();
+
+                    foreach (GridViewRow dr in gvFamilyDetails.Rows)
+                    {
+                        if (dtfm.Rows.Count == dr.RowIndex)
                         {
-                            TextBox txtEmpRName = gvFamilyDetails.Rows[i].FindControl("txtEmpName") as TextBox;
-                            DropDownList ddlRelationtype = gvFamilyDetails.Rows[i].FindControl("ddlRelation") as DropDownList;
-                            // TextBox txtDOFBirth = gvFamilyDetails.Rows[i].FindControl("txtRelDtofBirth") as TextBox;
-                            TextBox txtAge = gvFamilyDetails.Rows[i].FindControl("txtAge") as TextBox;
-                            TextBox txtoccupation = gvFamilyDetails.Rows[i].FindControl("txtReloccupation") as TextBox;
-                            TextBox txtrelphone = gvFamilyDetails.Rows[i].FindControl("txtRelphnno") as TextBox;
-                            TextBox txtrelmail = gvFamilyDetails.Rows[i].FindControl("txtRelmail") as TextBox;
-                            DropDownList ddlrelresidence = gvFamilyDetails.Rows[i].FindControl("ddlresidence") as DropDownList;
-                            TextBox txtRelplace = gvFamilyDetails.Rows[i].FindControl("txtplace") as TextBox;
-                            CheckBox ChkPfNominee = gvFamilyDetails.Rows[i].FindControl("ChkPFNominee") as CheckBox;
-                            CheckBox ChkESINominee = gvFamilyDetails.Rows[i].FindControl("ChkESINominee") as CheckBox;
+                            break;
+                        }
+                        TextBox txtEmpRName = dr.FindControl("txtEmpName") as TextBox;
+                        DropDownList ddlRelationtype = dr.FindControl("ddlRelation") as DropDownList;
+                        TextBox txtDOFBirth = dr.FindControl("txtRelDtofBirth") as TextBox;
+                        TextBox txtAge = dr.FindControl("txtAge") as TextBox;
+                        TextBox txtoccupation = dr.FindControl("txtReloccupation") as TextBox;
+                        TextBox txtrphone = dr.FindControl("txtRelphnno") as TextBox;
+                        TextBox txtrmail = dr.FindControl("txtRelmail") as TextBox;
+                        DropDownList ddlrelresidence = dr.FindControl("ddlresidence") as DropDownList;
+                        TextBox txtRelplace = dr.FindControl("txtplace") as TextBox;
+                        CheckBox ChkPfNominee = dr.FindControl("ChkPFNominee") as CheckBox;
+                        CheckBox ChkESINominee = dr.FindControl("ChkESINominee") as CheckBox;
 
+                        txtEmpRName.Text = dtfm.Rows[dr.RowIndex]["RName"].ToString();
+                        ddlRelationtype.SelectedValue = dtfm.Rows[dr.RowIndex]["RType"].ToString();
+                        txtDOFBirth.Text = dtfm.Rows[dr.RowIndex]["DOfBirth"].ToString();
 
+                        if (txtDOFBirth.Text == "01/01/1900")
+                        {
+                            txtDOFBirth.Text = "";
+                        }
+                        txtAge.Text = dtfm.Rows[dr.RowIndex]["Age"].ToString();
+                        txtoccupation.Text = dtfm.Rows[dr.RowIndex]["ROccupation"].ToString();
+                        txtrphone.Text = dtfm.Rows[dr.RowIndex]["RPhone"].ToString();
+                        txtrmail.Text = dtfm.Rows[dr.RowIndex]["RGMail"].ToString();
+                        ddlrelresidence.SelectedValue = dtfm.Rows[dr.RowIndex]["RResidence"].ToString();
+                        txtRelplace.Text = dtfm.Rows[dr.RowIndex]["RPlace"].ToString();
+                        string PFNominee = dtfm.Rows[dr.RowIndex]["PfNominee"].ToString();
+                        if (PFNominee == "Y")
+                        {
+                            ChkPfNominee.Checked = true;
 
-                            txtEmpRName.Text = "";
-                            ddlRelationtype.SelectedIndex = 0;
-                            //  txtDOFBirth.Text = "";
-                            txtAge.Text = "";
-                            txtoccupation.Text = "";
-                            ddlrelresidence.SelectedIndex = 0;
-                            txtRelplace.Text = "";
+                        }
+                        else
+                        {
                             ChkPfNominee.Checked = false;
+                        }
+                        string ESINominee = dtfm.Rows[dr.RowIndex]["EsiNominee"].ToString();
+                        if (ESINominee == "Y")
+                        {
+                            ChkESINominee.Checked = true;
+
+                        }
+                        else
+                        {
                             ChkESINominee.Checked = false;
-
-
                         }
+
 
                     }
 
-
-
-
-                    string sqlEducationDetails = "select * from EmpEducationDetails where EmpID = '" + empid + "' ";
-                    DataTable dted = config.ExecuteAdaptorAsyncWithQueryParams(sqlEducationDetails).Result;
-                    if (dted.Rows.Count > 0)
+                }
+                else
+                {
+                    for (int i = 0; i < gvFamilyDetails.Rows.Count; i++)
                     {
-                        GvEducationDetails.DataSource = dted;
-                        GvEducationDetails.DataBind();
-
-                        foreach (GridViewRow dr in GvEducationDetails.Rows)
-                        {
-                            if (dted.Rows.Count == dr.RowIndex)
-                            {
-                                break;
-                            }
-                            TextBox txtEdLevel = dr.FindControl("txtEdLevel") as TextBox;
-                            TextBox txtNameofSchoolColg = dr.FindControl("txtNameofSchoolColg") as TextBox;
-                            TextBox txtBoard = dr.FindControl("txtBoard") as TextBox;
-                            TextBox txtyear = dr.FindControl("txtyear") as TextBox;
-                            TextBox txtPassFail = dr.FindControl("txtPassFail") as TextBox;
-                            TextBox txtPercentage = dr.FindControl("txtPercentage") as TextBox;
-
-                            txtEdLevel.Text = dted.Rows[dr.RowIndex]["Qualification"].ToString();
-                            txtNameofSchoolColg.Text = dted.Rows[dr.RowIndex]["NameOfSchoolClg"].ToString();
-                            txtBoard.Text = dted.Rows[dr.RowIndex]["BoardorUniversity"].ToString();
-                            txtyear.Text = dted.Rows[dr.RowIndex]["YrOfStudy"].ToString();
-                            txtPassFail.Text = dted.Rows[dr.RowIndex]["PassOrFail"].ToString();
-                            txtPercentage.Text = dted.Rows[dr.RowIndex]["PercentageOfmarks"].ToString();
+                        TextBox txtEmpRName = gvFamilyDetails.Rows[i].FindControl("txtEmpName") as TextBox;
+                        DropDownList ddlRelationtype = gvFamilyDetails.Rows[i].FindControl("ddlRelation") as DropDownList;
+                        // TextBox txtDOFBirth = gvFamilyDetails.Rows[i].FindControl("txtRelDtofBirth") as TextBox;
+                        TextBox txtAge = gvFamilyDetails.Rows[i].FindControl("txtAge") as TextBox;
+                        TextBox txtoccupation = gvFamilyDetails.Rows[i].FindControl("txtReloccupation") as TextBox;
+                        TextBox txtrelphone = gvFamilyDetails.Rows[i].FindControl("txtRelphnno") as TextBox;
+                        TextBox txtrelmail = gvFamilyDetails.Rows[i].FindControl("txtRelmail") as TextBox;
+                        DropDownList ddlrelresidence = gvFamilyDetails.Rows[i].FindControl("ddlresidence") as DropDownList;
+                        TextBox txtRelplace = gvFamilyDetails.Rows[i].FindControl("txtplace") as TextBox;
+                        CheckBox ChkPfNominee = gvFamilyDetails.Rows[i].FindControl("ChkPFNominee") as CheckBox;
+                        CheckBox ChkESINominee = gvFamilyDetails.Rows[i].FindControl("ChkESINominee") as CheckBox;
 
 
-                        }
 
-                    }
-                    else
-                    {
-                        for (int i = 0; i < GvEducationDetails.Rows.Count; i++)
-                        {
-                            TextBox txtEdLevel = GvEducationDetails.Rows[i].FindControl("txtEdLevel") as TextBox;
-                            TextBox txtNameofSchoolColg = GvEducationDetails.Rows[i].FindControl("txtNameofSchoolColg") as TextBox;
-                            TextBox txtBoard = GvEducationDetails.Rows[i].FindControl("txtBoard") as TextBox;
-                            TextBox txtyear = GvEducationDetails.Rows[i].FindControl("txtyear") as TextBox;
-                            TextBox txtPassFail = GvEducationDetails.Rows[i].FindControl("txtPassFail") as TextBox;
-                            TextBox txtPercentage = GvEducationDetails.Rows[i].FindControl("txtPercentage") as TextBox;
+                        txtEmpRName.Text = "";
+                        ddlRelationtype.SelectedIndex = 0;
+                        //  txtDOFBirth.Text = "";
+                        txtAge.Text = "";
+                        txtoccupation.Text = "";
+                        ddlrelresidence.SelectedIndex = 0;
+                        txtRelplace.Text = "";
+                        ChkPfNominee.Checked = false;
+                        ChkESINominee.Checked = false;
 
-                            txtEdLevel.Text = "";
-                            txtPassFail.Text = "";
-                            txtPercentage.Text = "";
-                            txtyear.Text = "";
-                            txtNameofSchoolColg.Text = "";
-                            txtBoard.Text = "";
-
-                        }
 
                     }
 
+                }
 
-                    string sqlprevExpDetails = "select *,Convert(nvarchar(10),DateofResign,103) as DateofResign1 from EmpPrevExperience where EmpID = '" + empid + "' ";
-                    DataTable dtped = config.ExecuteAdaptorAsyncWithQueryParams(sqlprevExpDetails).Result;
-                    if (dtped.Rows.Count > 0)
+
+
+
+                string sqlEducationDetails = "select * from EmpEducationDetails where EmpID = '" + empid + "' ";
+                DataTable dted = config.ExecuteAdaptorAsyncWithQueryParams(sqlEducationDetails).Result;
+                if (dted.Rows.Count > 0)
+                {
+                    GvEducationDetails.DataSource = dted;
+                    GvEducationDetails.DataBind();
+
+                    foreach (GridViewRow dr in GvEducationDetails.Rows)
                     {
-                        GvPreviousExperience.DataSource = dtped;
-                        GvPreviousExperience.DataBind();
-
-                        foreach (GridViewRow dr in GvPreviousExperience.Rows)
+                        if (dted.Rows.Count == dr.RowIndex)
                         {
-                            if (dtped.Rows.Count == dr.RowIndex)
-                            {
-                                break;
-                            }
-
-                            TextBox txtregioncode = dr.FindControl("txtregioncode") as TextBox;
-                            TextBox txtempcode = dr.FindControl("txtempcode") as TextBox;
-                            TextBox txtExtension = dr.FindControl("txtExtension") as TextBox;
-                            TextBox txtPrevDesignation = dr.FindControl("txtPrevDesignation") as TextBox;
-                            TextBox txtCompAddress = dr.FindControl("txtCompAddress") as TextBox;
-                            TextBox txtyearofexp = dr.FindControl("txtyearofexp") as TextBox;
-                            TextBox txtPFNo = dr.FindControl("txtPFNo") as TextBox;
-                            TextBox txtESINo = dr.FindControl("txtESINo") as TextBox;
-                            TextBox txtDtofResigned = dr.FindControl("txtDtofResigned") as TextBox;
-
-
-                            txtregioncode.Text = dtped.Rows[dr.RowIndex]["RegionCode"].ToString();
-                            txtempcode.Text = dtped.Rows[dr.RowIndex]["EmployerCode"].ToString();
-                            txtExtension.Text = dtped.Rows[dr.RowIndex]["Extension"].ToString();
-                            txtPrevDesignation.Text = dtped.Rows[dr.RowIndex]["Designation"].ToString();
-                            txtCompAddress.Text = dtped.Rows[dr.RowIndex]["CompAddress"].ToString();
-                            txtyearofexp.Text = dtped.Rows[dr.RowIndex]["YrOfExp"].ToString();
-                            txtPFNo.Text = dtped.Rows[dr.RowIndex]["PFNo"].ToString();
-                            txtESINo.Text = dtped.Rows[dr.RowIndex]["ESINo"].ToString();
-                            txtDtofResigned.Text = dtped.Rows[dr.RowIndex]["DateofResign1"].ToString();
-                            if (txtDtofResigned.Text == "01/01/1900")
-                            {
-                                txtDtofResigned.Text = "";
-                            }
-
+                            break;
                         }
+                        TextBox txtEdLevel = dr.FindControl("txtEdLevel") as TextBox;
+                        TextBox txtNameofSchoolColg = dr.FindControl("txtNameofSchoolColg") as TextBox;
+                        TextBox txtBoard = dr.FindControl("txtBoard") as TextBox;
+                        TextBox txtyear = dr.FindControl("txtyear") as TextBox;
+                        TextBox txtPassFail = dr.FindControl("txtPassFail") as TextBox;
+                        TextBox txtPercentage = dr.FindControl("txtPercentage") as TextBox;
+
+                        txtEdLevel.Text = dted.Rows[dr.RowIndex]["Qualification"].ToString();
+                        txtNameofSchoolColg.Text = dted.Rows[dr.RowIndex]["NameOfSchoolClg"].ToString();
+                        txtBoard.Text = dted.Rows[dr.RowIndex]["BoardorUniversity"].ToString();
+                        txtyear.Text = dted.Rows[dr.RowIndex]["YrOfStudy"].ToString();
+                        txtPassFail.Text = dted.Rows[dr.RowIndex]["PassOrFail"].ToString();
+                        txtPercentage.Text = dted.Rows[dr.RowIndex]["PercentageOfmarks"].ToString();
+
 
                     }
-                    else
-                    {
-                        for (int i = 0; i < GvPreviousExperience.Rows.Count; i++)
-                        {
-                            TextBox txtregioncode = GvPreviousExperience.Rows[i].FindControl("txtregioncode") as TextBox;
-                            TextBox txtempcode = GvPreviousExperience.Rows[i].FindControl("txtempcode") as TextBox;
-                            TextBox txtExtension = GvPreviousExperience.Rows[i].FindControl("txtExtension") as TextBox;
-                            TextBox txtPrevDesignation = GvPreviousExperience.Rows[i].FindControl("txtPrevDesignation") as TextBox;
-                            TextBox txtCompAddress = GvPreviousExperience.Rows[i].FindControl("txtCompAddress") as TextBox;
-                            TextBox txtyearofexp = GvPreviousExperience.Rows[i].FindControl("txtyearofexp") as TextBox;
-                            TextBox txtPFNo = GvPreviousExperience.Rows[i].FindControl("txtPFNo") as TextBox;
-                            TextBox txtESINo = GvPreviousExperience.Rows[i].FindControl("txtESINo") as TextBox;
-                            TextBox txtDtofResigned = GvPreviousExperience.Rows[i].FindControl("txtDtofResigned") as TextBox;
 
-                            txtregioncode.Text = "";
+                }
+                else
+                {
+                    for (int i = 0; i < GvEducationDetails.Rows.Count; i++)
+                    {
+                        TextBox txtEdLevel = GvEducationDetails.Rows[i].FindControl("txtEdLevel") as TextBox;
+                        TextBox txtNameofSchoolColg = GvEducationDetails.Rows[i].FindControl("txtNameofSchoolColg") as TextBox;
+                        TextBox txtBoard = GvEducationDetails.Rows[i].FindControl("txtBoard") as TextBox;
+                        TextBox txtyear = GvEducationDetails.Rows[i].FindControl("txtyear") as TextBox;
+                        TextBox txtPassFail = GvEducationDetails.Rows[i].FindControl("txtPassFail") as TextBox;
+                        TextBox txtPercentage = GvEducationDetails.Rows[i].FindControl("txtPercentage") as TextBox;
+
+                        txtEdLevel.Text = "";
+                        txtPassFail.Text = "";
+                        txtPercentage.Text = "";
+                        txtyear.Text = "";
+                        txtNameofSchoolColg.Text = "";
+                        txtBoard.Text = "";
+
+                    }
+
+                }
+
+
+                string sqlprevExpDetails = "select *,Convert(nvarchar(10),DateofResign,103) as DateofResign1 from EmpPrevExperience where EmpID = '" + empid + "' ";
+                DataTable dtped = config.ExecuteAdaptorAsyncWithQueryParams(sqlprevExpDetails).Result;
+                if (dtped.Rows.Count > 0)
+                {
+                    GvPreviousExperience.DataSource = dtped;
+                    GvPreviousExperience.DataBind();
+
+                    foreach (GridViewRow dr in GvPreviousExperience.Rows)
+                    {
+                        if (dtped.Rows.Count == dr.RowIndex)
+                        {
+                            break;
+                        }
+
+                        TextBox txtregioncode = dr.FindControl("txtregioncode") as TextBox;
+                        TextBox txtempcode = dr.FindControl("txtempcode") as TextBox;
+                        TextBox txtExtension = dr.FindControl("txtExtension") as TextBox;
+                        TextBox txtPrevDesignation = dr.FindControl("txtPrevDesignation") as TextBox;
+                        TextBox txtCompAddress = dr.FindControl("txtCompAddress") as TextBox;
+                        TextBox txtyearofexp = dr.FindControl("txtyearofexp") as TextBox;
+                        TextBox txtPFNo = dr.FindControl("txtPFNo") as TextBox;
+                        TextBox txtESINo = dr.FindControl("txtESINo") as TextBox;
+                        TextBox txtDtofResigned = dr.FindControl("txtDtofResigned") as TextBox;
+
+
+                        txtregioncode.Text = dtped.Rows[dr.RowIndex]["RegionCode"].ToString();
+                        txtempcode.Text = dtped.Rows[dr.RowIndex]["EmployerCode"].ToString();
+                        txtExtension.Text = dtped.Rows[dr.RowIndex]["Extension"].ToString();
+                        txtPrevDesignation.Text = dtped.Rows[dr.RowIndex]["Designation"].ToString();
+                        txtCompAddress.Text = dtped.Rows[dr.RowIndex]["CompAddress"].ToString();
+                        txtyearofexp.Text = dtped.Rows[dr.RowIndex]["YrOfExp"].ToString();
+                        txtPFNo.Text = dtped.Rows[dr.RowIndex]["PFNo"].ToString();
+                        txtESINo.Text = dtped.Rows[dr.RowIndex]["ESINo"].ToString();
+                        txtDtofResigned.Text = dtped.Rows[dr.RowIndex]["DateofResign1"].ToString();
+                        if (txtDtofResigned.Text == "01/01/1900")
+                        {
                             txtDtofResigned.Text = "";
-                            txtESINo.Text = "";
-                            txtPFNo.Text = "";
-                            txtyearofexp.Text = "";
-                            txtCompAddress.Text = "";
-                            txtPrevDesignation.Text = "";
-                            txtempcode.Text = "";
                         }
 
                     }
 
-                
+                }
+                else
+                {
+                    for (int i = 0; i < GvPreviousExperience.Rows.Count; i++)
+                    {
+                        TextBox txtregioncode = GvPreviousExperience.Rows[i].FindControl("txtregioncode") as TextBox;
+                        TextBox txtempcode = GvPreviousExperience.Rows[i].FindControl("txtempcode") as TextBox;
+                        TextBox txtExtension = GvPreviousExperience.Rows[i].FindControl("txtExtension") as TextBox;
+                        TextBox txtPrevDesignation = GvPreviousExperience.Rows[i].FindControl("txtPrevDesignation") as TextBox;
+                        TextBox txtCompAddress = GvPreviousExperience.Rows[i].FindControl("txtCompAddress") as TextBox;
+                        TextBox txtyearofexp = GvPreviousExperience.Rows[i].FindControl("txtyearofexp") as TextBox;
+                        TextBox txtPFNo = GvPreviousExperience.Rows[i].FindControl("txtPFNo") as TextBox;
+                        TextBox txtESINo = GvPreviousExperience.Rows[i].FindControl("txtESINo") as TextBox;
+                        TextBox txtDtofResigned = GvPreviousExperience.Rows[i].FindControl("txtDtofResigned") as TextBox;
+
+                        txtregioncode.Text = "";
+                        txtDtofResigned.Text = "";
+                        txtESINo.Text = "";
+                        txtPFNo.Text = "";
+                        txtyearofexp.Text = "";
+                        txtCompAddress.Text = "";
+                        txtPrevDesignation.Text = "";
+                        txtempcode.Text = "";
+                    }
+
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -6294,6 +6356,13 @@ namespace Jawan.Portal
         {
             string AndroidEmpid = ddlAndroidEmpid.SelectedValue;
             LoadPersonalInfo(AndroidEmpid);
+        }
+        protected void btnReject_Click(object sender, EventArgs e)
+        {
+            string updatequery = "update Empdetails_Android set EmpRejectStatus=1 where empid='" + ddlAndroidEmpid.SelectedValue + "' ";
+            int result = config.ExecuteNonQueryWithQueryAsync(updatequery).Result;
+            ClearDataFromPersonalInfoTabFields();
+            AndroidEmpid();
         }
     }
 }

@@ -102,7 +102,7 @@ namespace Jawan.Portal
             ht.Add("@Day", Day);
             ht.Add("@month", month);
             ht.Add("@Year", Year);
-            ht.Add("@CompanyID", "5");
+            ht.Add("@CompanyID", "6");
             ht.Add("@Empid", Empid);
             ht.Add("@Type", "GetData");
 
@@ -208,7 +208,7 @@ namespace Jawan.Portal
             ht.Add("@Day", Day);
             ht.Add("@month", month);
             ht.Add("@Year", Year);
-            ht.Add("@CompanyID", "5");
+            ht.Add("@CompanyID", "6");
             ht.Add("@Empid", Empid);
             ht.Add("@PitstopAttachmentId", hfPitstopAttachmentId.Value);
             ht.Add("@Type", "GetImageData");
@@ -226,6 +226,59 @@ namespace Jawan.Portal
 
 
                 ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup();", true);
+            }
+        }
+
+        protected void lbtn_Export_Click(object sender, EventArgs e)
+        {
+            if (txtMonth.Text.Trim().Length == 0)
+            {
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Month');", true);
+                return;
+            }
+
+            if (txtEmpIDName.Text.Trim().Length == 0)
+            {
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Emp ID');", true);
+                return;
+            }
+
+            string date = string.Empty;
+
+            if (txtMonth.Text.Trim().Length > 0)
+            {
+                date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+            }
+
+            string Day = DateTime.Parse(date).Day.ToString();
+            string month = DateTime.Parse(date).Month.ToString();
+            string Year = DateTime.Parse(date).Year.ToString();
+
+            string Empid = "";
+            string DType = "Excel";
+            if (txtEmpIDName.Text.Length > 10)
+            {
+                Empid = txtEmpIDName.Text.Substring(0, 10);
+            }
+
+
+            string Spname = "GetPinMyvisitImages";
+            Hashtable ht = new Hashtable();
+            ht.Add("@Day", Day);
+            ht.Add("@month", month);
+            ht.Add("@Year", Year);
+            ht.Add("@CompanyID", "6");
+            ht.Add("@Empid", Empid);
+            ht.Add("@Type", "GetData");
+            ht.Add("@DType", DType);
+
+
+            DataTable dt = config.ExecuteAdaptorAsyncWithParams(Spname, ht).Result;
+            if (dt.Rows.Count > 0)
+            {
+                GVUtil.NewExportExcel( "PinMyvisit.xlsx",dt);
             }
         }
     }

@@ -120,7 +120,7 @@
 
 
 
-       
+
 
 
 
@@ -142,25 +142,25 @@
 
                 $(function () {
 
-            GetEmpid();
+                    GetEmpid();
 
-            $("[id*=GVpinmyvisit]").find("[id*=btnview]").click(function () {
+                    $("[id*=GVpinmyvisit]").find("[id*=btnview]").click(function () {
 
 
-                //Reference the GridView Row.
-                var row = $(this).closest("tr");
+                        //Reference the GridView Row.
+                        var row = $(this).closest("tr");
 
-                document.getElementById("<%=hfPitstopAttachmentId.ClientID %>").value = row.find("td").eq(6).find(":text").val();
+                        document.getElementById("<%=hfPitstopAttachmentId.ClientID %>").value = row.find("td").eq(11).find(":text").val();
                 document.getElementById("<%=btnGetImage.ClientID %>").click();
 
 
-                return false;
-            });
+                        return false;
+                    });
 
 
                 });
 
-                </script>
+            </script>
 
             <!-- LOGO AND MAIN MENU SECTION BEGIN -->
             <div id="header">
@@ -242,7 +242,9 @@
                             </asp:ScriptManager>
                             <div class="boxbody" style="padding: 5px 5px 5px 5px; height: auto">
                                 <!--  Content to be add here> -->
-
+                                <div style="float: right">
+                                    <asp:LinkButton ID="lbtn_Export" runat="server" OnClick="lbtn_Export_Click">Export to Excel</asp:LinkButton>
+                                </div>
                                 <table width="75%" style="margin: 0px auto">
                                     <tr>
 
@@ -286,8 +288,13 @@
                                             </asp:TemplateField>
                                             <asp:BoundField DataField="UpdatedBy" HeaderText="Emp ID" />
                                             <asp:BoundField DataField="EmpFName" HeaderText="Name" />
+                                            <asp:BoundField DataField="Clientid" HeaderText="Client ID" />
                                             <asp:BoundField DataField="UpdatedOn" HeaderText="Created On" />
                                             <asp:BoundField DataField="EmpRemarks" HeaderText="Remarks" />
+                                            <asp:BoundField DataField="Activity" HeaderText="Activity" />
+                                            <asp:BoundField DataField="CheckinLat" HeaderText="Checkin Lat" />
+                                            <asp:BoundField DataField="CheckinLng" HeaderText="Checkin Lng" />
+                                            <asp:BoundField DataField="Address" HeaderText="Checkin Address" />
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <asp:Button ID="btnview" runat="server" Text="View" />

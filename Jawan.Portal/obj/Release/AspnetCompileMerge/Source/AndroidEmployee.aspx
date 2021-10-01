@@ -857,7 +857,18 @@
                                                         <td>&nbsp;
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>Vaccination Dose
+                                                        </td>
+                                                        <td>
+                                                            <asp:DropDownList ID="ddlVaccinationDose" TabIndex="34" runat="server" class="sdrop">
+                                                                <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                                                <asp:ListItem Value="1">First Dose</asp:ListItem>
+                                                                <asp:ListItem Value="2">Second Dose</asp:ListItem>
+                                                            </asp:DropDownList>
 
+                                                        </td>
+                                                    </tr>
                                                 </table>
 
 
@@ -1126,7 +1137,32 @@
                                                                 Checked="true" />
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>Vaccination Type
+                                                        </td>
+                                                        <td>
+                                                            <asp:DropDownList ID="ddlVaccinationType" TabIndex="35" runat="server" class="sdrop">
+                                                                <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                                                <asp:ListItem Value="1">COVISHIELD</asp:ListItem>
+                                                                <asp:ListItem Value="2">COVAXIN</asp:ListItem>
+                                                                <asp:ListItem Value="3">SPUTNIK V</asp:ListItem>
+                                                            </asp:DropDownList>
 
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Vaccination date
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="txtVaccinationdate" runat="server" CssClass="sinput" TabIndex="38"></asp:TextBox>
+                                                            <cc1:CalendarExtender ID="CalendarEVaccinationdate" runat="server" Enabled="true" TargetControlID="txtVaccinationdate"
+                                                                Format="dd/MM/yyyy">
+                                                            </cc1:CalendarExtender>
+                                                            <cc1:FilteredTextBoxExtender ID="FTBoxEVaccinationdate" runat="server" Enabled="True" TargetControlID="txtVaccinationdate"
+                                                                ValidChars="/0123456789">
+                                                            </cc1:FilteredTextBoxExtender>
+                                                        </td>
+                                                    </tr>
                                                 </table>
                                             </div>
                                             <br />
@@ -3565,7 +3601,9 @@
                             <td>
                                 <asp:Button ID="Btn_Cancel_Personal_Tab" runat="server" Text="Cancel" OnClientClick='return confirm("Are you sure you want to Cancel this entry?");'
                                     OnClick="Btn_Cancel_Personal_Tab_Click" /></td>
-
+                            <td>
+                                <asp:Button ID="btnReject" runat="server" Text="Reject" OnClientClick='return confirm("Are you sure you want to Reject this entry?");' OnClick="btnReject_Click" />
+                            </td>
 
                         </tr>
                     </table>
