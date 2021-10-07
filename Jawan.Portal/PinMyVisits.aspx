@@ -151,7 +151,7 @@
                         var row = $(this).closest("tr");
 
                         document.getElementById("<%=hfPitstopAttachmentId.ClientID %>").value = row.find("td").eq(11).find(":text").val();
-                document.getElementById("<%=btnGetImage.ClientID %>").click();
+                        document.getElementById("<%=btnGetImage.ClientID %>").click();
 
 
                         return false;
@@ -270,7 +270,9 @@
                                         <td>
                                             <asp:Button ID="btnSubmit" runat="server" Text="Submit" class=" btn save" OnClick="btnSubmit_Click" ToolTip="Submit" />
                                         </td>
-
+                                        <td>
+                                            <asp:Button ID="Button1" runat="server" Text="PDF" class=" btn save" OnClick="Button1_Click" ToolTip="Submit" />
+                                        </td>
                                     </tr>
                                 </table>
 

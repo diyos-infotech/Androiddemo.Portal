@@ -5874,7 +5874,7 @@ namespace Jawan.Portal
                 }
 
 
-                string sqlFamilyDetails = "select ER.RName,ER.RType,ER.EmpId,Convert(nvarchar(10),ER.DOfBirth,103) as DOfBirth,ER.pfnominee,ER.Esinominee,ER.age,ER.ROccupation,ER.RResidence,ER.RPlace,ER.RPhone,ER.RGMail from EmpRelationships as ER join EmpDetails as ED on ER.EmpId=ED.EmpId where ED.EmpID = '" + empid + "' ";
+                string sqlFamilyDetails = "select ER.RName,ER.RType,ER.EmpId,Convert(nvarchar(10),ER.DOfBirth,103) as DOfBirth,ER.pfnominee,ER.Esinominee,ER.age,ER.ROccupation,ER.RResidence,ER.RPlace,ER.RPhone,ER.RGMail from EmpRelationships_Android as ER join EmpDetails_Android as ED on ER.EmpId=ED.EmpId where ED.EmpID = '" + empid + "' ";
                 DataTable dtfm = config.ExecuteAdaptorAsyncWithQueryParams(sqlFamilyDetails).Result;
                 if (dtfm.Rows.Count > 0)
                 {
@@ -6359,7 +6359,7 @@ namespace Jawan.Portal
         }
         protected void btnReject_Click(object sender, EventArgs e)
         {
-            string updatequery = "update Empdetails_Android set EmpRejectStatus=1 where empid='" + ddlAndroidEmpid.SelectedValue + "' ";
+            string updatequery = "update Empdetails_Android set EmpRejectStatus=1,Empstatus=2 where empid='" + ddlAndroidEmpid.SelectedValue + "' ";
             int result = config.ExecuteNonQueryWithQueryAsync(updatequery).Result;
             ClearDataFromPersonalInfoTabFields();
             AndroidEmpid();

@@ -123,13 +123,17 @@
     <Content Include="AndroidEmployee.aspx" />
     <Content Include="assets\chosen-sprite.png" />
     <Content Include="ClientManPowerReq.aspx" />
+    <Content Include="Create_Tab_App_Passwords.aspx" />
+    <Content Include="Create_UserFeature.aspx" />
     <Content Include="css\assets\clmanicon.png" />
     <Content Include="css\assets\DeleteIcon.png" />
     <Content Include="css\Marketing.css" />
     <Content Include="EmployeeLeaveSetUp.aspx" />
     <Content Include="EmpShiftDetails.aspx" />
+    <Content Include="Enable_or_Disable_Pin_My_Visit.aspx" />
     <Content Include="GetDaywise_Android_Attendance.aspx" />
     <Content Include="ImportRoster.aspx" />
+    <Content Include="Individual_Geo_Fence.aspx" />
     <Content Include="LeadsReport.aspx" />
     <Content Include="LeaveBalance_HistoryReport.aspx" />
     <Content Include="LeaveHolidayListReport.aspx" />
@@ -1746,6 +1750,20 @@
     <Compile Include="CreateLogin.aspx.designer.cs">
       <DependentUpon>CreateLogin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Create_Tab_App_Passwords.aspx.cs">
+      <DependentUpon>Create_Tab_App_Passwords.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Create_Tab_App_Passwords.aspx.designer.cs">
+      <DependentUpon>Create_Tab_App_Passwords.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Create_UserFeature.aspx.cs">
+      <DependentUpon>Create_UserFeature.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Create_UserFeature.aspx.designer.cs">
+      <DependentUpon>Create_UserFeature.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DAL\AppConfiguration.cs" />
     <Compile Include="DAL\AutoCompleteAA.cs">
       <SubType>Component</SubType>
@@ -1968,6 +1986,13 @@
     </Compile>
     <Compile Include="EmpWisePaysheetDetails.aspx.designer.cs">
       <DependentUpon>EmpWisePaysheetDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Enable_or_Disable_Pin_My_Visit.aspx.cs">
+      <DependentUpon>Enable_or_Disable_Pin_My_Visit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Enable_or_Disable_Pin_My_Visit.aspx.designer.cs">
+      <DependentUpon>Enable_or_Disable_Pin_My_Visit.aspx</DependentUpon>
     </Compile>
     <Compile Include="ESIBranches.aspx.cs">
       <DependentUpon>ESIBranches.aspx</DependentUpon>
@@ -2213,6 +2238,13 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Individual_Geo_Fence.aspx.cs">
+      <DependentUpon>Individual_Geo_Fence.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Individual_Geo_Fence.aspx.designer.cs">
+      <DependentUpon>Individual_Geo_Fence.aspx</DependentUpon>
     </Compile>
     <Compile Include="InvClientMaster.aspx.cs">
       <DependentUpon>InvClientMaster.aspx</DependentUpon>

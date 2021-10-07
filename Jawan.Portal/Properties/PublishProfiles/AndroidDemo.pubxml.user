@@ -220,7 +220,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:55</publishTime>
     </File>
     <File Include="bin/Jawan.Portal.dll">
-      <publishTime>10/01/2021 14:48:37</publishTime>
+      <publishTime>10/07/2021 11:15:10</publishTime>
     </File>
     <File Include="bin/Jawan.Portal.pdb">
       <publishTime>07/23/2020 15:46:03</publishTime>
@@ -410,6 +410,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="CreateLogin.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
+    </File>
+    <File Include="Create_Tab_App_Passwords.aspx">
+      <publishTime>10/04/2021 10:51:27</publishTime>
+    </File>
+    <File Include="Create_UserFeature.aspx">
+      <publishTime>10/02/2021 15:17:16</publishTime>
     </File>
     <File Include="css/ajax-loader.gif">
       <publishTime>04/18/2020 11:17:55</publishTime>
@@ -1032,6 +1038,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="EmpWisePaysheetDetails.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
+    <File Include="Enable_or_Disable_Pin_My_Visit.aspx">
+      <publishTime>10/01/2021 18:23:43</publishTime>
+    </File>
     <File Include="ESIBranches.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
@@ -1139,6 +1148,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Index.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
+    </File>
+    <File Include="Individual_Geo_Fence.aspx">
+      <publishTime>10/04/2021 19:55:46</publishTime>
     </File>
     <File Include="InvClientMaster.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -1405,7 +1417,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="PinMyVisits.aspx">
-      <publishTime>10/01/2021 12:45:04</publishTime>
+      <publishTime>10/02/2021 16:21:50</publishTime>
     </File>
     <File Include="plugins/bootstrap-slider/bootstrap-slider.js">
       <publishTime>04/18/2020 11:18:07</publishTime>
@@ -3634,7 +3646,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/01/2021 14:48:48</publishTime>
+      <publishTime>10/07/2021 11:15:30</publishTime>
     </File>
     <File Include="Previligers.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -3802,7 +3814,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="Settings.aspx">
-      <publishTime>07/23/2020 10:57:07</publishTime>
+      <publishTime>10/04/2021 13:16:45</publishTime>
     </File>
     <File Include="StockInHandReports.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -3859,7 +3871,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/22/2021 16:50:35</publishTime>
+      <publishTime>10/07/2021 11:15:22</publishTime>
     </File>
   </ItemGroup>
 </Project>
