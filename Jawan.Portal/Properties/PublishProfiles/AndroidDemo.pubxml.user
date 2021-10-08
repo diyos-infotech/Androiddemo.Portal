@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 This file is used by the publish/package process of your Web project. You can customize the behavior of this process
-by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>D:\Precompiled\AndroidDemo.Portal</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
@@ -56,9 +55,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="assets/chosen-sprite.png">
       <publishTime>09/21/2021 18:41:27</publishTime>
-    </File>
-    <File Include="assets/EmpPhotos/SF000012Photo.jpg">
-      <publishTime>03/22/2018 16:42:40</publishTime>
     </File>
     <File Include="assets/EPFLogo.png">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -120,14 +116,8 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="assets/loader.gif">
       <publishTime>04/18/2020 11:17:55</publishTime>
     </File>
-    <File Include="assets/logo %286%29.jpg">
-      <publishTime>03/22/2018 16:42:40</publishTime>
-    </File>
     <File Include="assets/logo.png">
       <publishTime>04/18/2020 11:17:55</publishTime>
-    </File>
-    <File Include="assets/logo1.png">
-      <publishTime>03/22/2018 16:42:40</publishTime>
     </File>
     <File Include="assets/logo12.png">
       <publishTime>04/18/2020 11:17:55</publishTime>
@@ -137,9 +127,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="assets/PP.png">
       <publishTime>04/18/2020 11:17:54</publishTime>
-    </File>
-    <File Include="assets/SFBillLogo.png">
-      <publishTime>03/22/2018 16:42:40</publishTime>
     </File>
     <File Include="assets/Status_Active.png">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -152,12 +139,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="assets/UL.png">
       <publishTime>04/18/2020 11:17:54</publishTime>
-    </File>
-    <File Include="assets/VCFSBillLogo.png">
-      <publishTime>03/22/2018 16:42:40</publishTime>
-    </File>
-    <File Include="assets/VPMSBillLogo.png">
-      <publishTime>03/22/2018 16:42:40</publishTime>
     </File>
     <File Include="assets/WO.png">
       <publishTime>04/18/2020 11:17:55</publishTime>
@@ -220,10 +201,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:55</publishTime>
     </File>
     <File Include="bin/Jawan.Portal.dll">
-      <publishTime>10/07/2021 11:15:10</publishTime>
-    </File>
-    <File Include="bin/Jawan.Portal.pdb">
-      <publishTime>07/23/2020 15:46:03</publishTime>
+      <publishTime>10/08/2021 12:02:12</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>04/18/2020 11:18:09</publishTime>
@@ -284,9 +262,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>04/18/2020 11:18:09</publishTime>
-    </File>
-    <File Include="bin/TTG.Portal.dll">
-      <publishTime>03/26/2018 21:25:55</publishTime>
     </File>
     <File Include="BloodGroups.aspx">
       <publishTime>04/18/2020 11:17:53</publishTime>
@@ -371,9 +346,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="ClientManPowerReq.aspx">
       <publishTime>07/23/2020 23:02:06</publishTime>
-    </File>
-    <File Include="ClientManPowerReq1.aspx">
-      <publishTime>07/23/2020 15:13:41</publishTime>
     </File>
     <File Include="ClientpfReports.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -722,24 +694,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="css/styles.css">
       <publishTime>04/18/2020 11:17:55</publishTime>
-    </File>
-    <File Include="DAL/AppConfiguration.cs">
-      <publishTime>03/26/2018 20:39:01</publishTime>
-    </File>
-    <File Include="DAL/AutoCompleteAA.cs">
-      <publishTime>03/22/2018 16:42:47</publishTime>
-    </File>
-    <File Include="DAL/Autocompletion.cs">
-      <publishTime>03/22/2018 16:42:47</publishTime>
-    </File>
-    <File Include="DAL/FameService.cs">
-      <publishTime>03/26/2018 20:39:01</publishTime>
-    </File>
-    <File Include="DAL/GridViewExportUtil.cs">
-      <publishTime>03/22/2018 16:42:47</publishTime>
-    </File>
-    <File Include="DAL/SqlHelper.cs">
-      <publishTime>03/26/2018 20:39:01</publishTime>
     </File>
     <File Include="data/Log.txt">
       <publishTime>04/18/2020 11:17:55</publishTime>
@@ -1189,7 +1143,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2020 10:57:07</publishTime>
     </File>
     <File Include="LeaveBalance_HistoryReport.aspx">
-      <publishTime>09/22/2021 16:48:23</publishTime>
+      <publishTime>10/08/2021 11:29:22</publishTime>
     </File>
     <File Include="LeaveHolidayListReport.aspx">
       <publishTime>09/22/2021 16:47:35</publishTime>
@@ -3646,7 +3600,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/07/2021 11:15:30</publishTime>
+      <publishTime>10/08/2021 12:02:22</publishTime>
     </File>
     <File Include="Previligers.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -3871,7 +3825,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/07/2021 11:15:22</publishTime>
+      <publishTime>10/08/2021 11:42:49</publishTime>
     </File>
   </ItemGroup>
 </Project>

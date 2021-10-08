@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
 using KLTS.Data;
-using System.Data.SqlClient;
-using System.Web.Script.Serialization;
-using System.IO;
 using Jawan.Portal.DAL;
 namespace Jawan.Portal
 {
@@ -42,7 +31,6 @@ namespace Jawan.Portal
 
                 // InitDatabase();
                 lblcname.Text = SqlHelper.Instance.GetCompanyname();
-
                 Session["EmpIDPrefix"] = string.Empty;
                 Session["CmpIDPrefix"] = string.Empty;
                 Session["BillnoWithoutST"] = string.Empty;

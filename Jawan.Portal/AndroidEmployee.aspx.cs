@@ -283,8 +283,6 @@ namespace Jawan.Portal
             ddlDivision.Items.Insert(0, new ListItem("-Select-", "0"));
         }
 
-
-
         protected void LoadDepartments()
         {
 

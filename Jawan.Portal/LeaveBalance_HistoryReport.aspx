@@ -92,7 +92,6 @@
         jQuery(document).ready(function mchoose() {
             jQuery(".chosen").data("placeholder", "Select Frameworks...").chosen();
         });
-       
 
    <%-- <script>
         $(document).ready(function () {
