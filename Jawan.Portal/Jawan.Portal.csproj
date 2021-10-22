@@ -128,6 +128,7 @@
     <Content Include="css\assets\clmanicon.png" />
     <Content Include="css\assets\DeleteIcon.png" />
     <Content Include="css\Marketing.css" />
+    <Content Include="Delete_Android_Attendance.aspx" />
     <Content Include="EmployeeLeaveSetUp.aspx" />
     <Content Include="EmpShiftDetails.aspx" />
     <Content Include="Enable_or_Disable_Pin_My_Visit.aspx" />
@@ -1825,6 +1826,13 @@
     </Compile>
     <Compile Include="DeleteStock.aspx.designer.cs">
       <DependentUpon>DeleteStock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Delete_Android_Attendance.aspx.cs">
+      <DependentUpon>Delete_Android_Attendance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Delete_Android_Attendance.aspx.designer.cs">
+      <DependentUpon>Delete_Android_Attendance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Department.aspx.cs">
       <DependentUpon>Department.aspx</DependentUpon>

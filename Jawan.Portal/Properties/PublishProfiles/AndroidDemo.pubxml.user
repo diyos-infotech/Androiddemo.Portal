@@ -201,7 +201,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:55</publishTime>
     </File>
     <File Include="bin/Jawan.Portal.dll">
-      <publishTime>10/16/2021 18:09:51</publishTime>
+      <publishTime>10/22/2021 13:10:38</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>04/18/2020 11:18:09</publishTime>
@@ -351,7 +351,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="ClientReports.aspx">
-      <publishTime>09/22/2021 13:01:29</publishTime>
+      <publishTime>10/22/2021 12:15:23</publishTime>
     </File>
     <File Include="Clients.aspx">
       <publishTime>07/23/2020 23:08:03</publishTime>
@@ -739,6 +739,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="DeleteStock.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
+    </File>
+    <File Include="Delete_Android_Attendance.aspx">
+      <publishTime>10/22/2021 15:00:45</publishTime>
     </File>
     <File Include="Department.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -3600,7 +3603,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/16/2021 18:10:01</publishTime>
+      <publishTime>10/22/2021 19:18:05</publishTime>
     </File>
     <File Include="Previligers.aspx">
       <publishTime>04/18/2020 11:17:54</publishTime>
@@ -3825,7 +3828,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2020 11:17:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/08/2021 11:42:49</publishTime>
+      <publishTime>10/22/2021 19:17:55</publishTime>
     </File>
   </ItemGroup>
 </Project>
