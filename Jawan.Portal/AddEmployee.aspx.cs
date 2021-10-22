@@ -1862,6 +1862,21 @@ namespace Jawan.Portal
                 FoodAllowance = txtfoodallowance.Text;
 
                 #endregion Begin salary tab
+                #region Vaccination done by Mahesh Goud on 2021-09-23
+                var VaccinationDose = "";
+                var VaccinationType = "";
+                var VaccinationDate = string.Empty;
+                if (txtVaccinationdate.Text.Trim().Length != 0)
+                {
+                    VaccinationDate = Timings.Instance.CheckDateFormat(txtVaccinationdate.Text);
+                }
+                else
+                {
+                    VaccinationDate = "01/01/1900";
+                }
+                VaccinationDose = ddlVaccinationDose.SelectedValue;
+                VaccinationType = ddlVaccinationType.SelectedValue;
+                #endregion
 
                 #region  Begin Stored Procedure Parameters  as  on [18-09-2013]
                 Hashtable AddEmpdetails = new Hashtable();
@@ -1911,7 +1926,9 @@ namespace Jawan.Portal
                 cmd.Parameters.Add("@EmpEmergContNo", EmpEmergContNo);
                 cmd.Parameters.Add("FormNo", FormNo);
                 cmd.Parameters.Add("@BirthPlace", Birthplace);
-
+                cmd.Parameters.Add("@VaccinationDose", VaccinationDose);
+                cmd.Parameters.Add("@VaccinationType", VaccinationType);
+                cmd.Parameters.Add("@VaccinationDate", VaccinationDate);
 
                 #endregion End  Parameters  Marital Status To Date Of Leaving
 
@@ -4768,19 +4785,14 @@ namespace Jawan.Portal
                 "EmpHeight,EmpWeight,EmpChestExp,EmpChestunex,EmpEyesColor,EmpHairColor,SpeciallyAbled,ApplicantCategory,prPoliceStation,prTown,prTaluka,pePoliceStation,peTown,peTaluka," +
                 "prState,C2.City as prCity,prphone,EmpPresentAddress,peState,C.City as peCity,pephone,prPostoffice,prLmark,prPincode,pePostoffice,peLmark,pepincode, empbankname,empbankacno,Empbankbranchname,empifsccode,empbranchcode,empbankcode," +
                 "empbankappno,empregioncode,empinsnominee,empbankcardref,empnomineedtofbirth,empnomineerel,empinscover,empinsdedamt,empUANnumber,aadhaarid, AddlAmount," +
-                " FoodAllowance,isnull(Oldempid,'') as Oldempid,prResidingDate,prperiodofstay,ResidingDate,periodofstay,EmployeeType,EmpSign,EmpFatherOccupation,isnull(EmergencyContNo,'') as EmergencyContNo,Shift,ShiftStartTime,ShiftEndTime,Woff1,Woff2  from EmpDetails " +
+                " FoodAllowance,isnull(Oldempid,'') as Oldempid,prResidingDate,prperiodofstay,ResidingDate,periodofstay,EmployeeType,EmpSign,EmpFatherOccupation,isnull(EmergencyContNo,'') as EmergencyContNo,Shift,ShiftStartTime,ShiftEndTime,Woff1,Woff2,isnull(vaccineDate,'') as VaccinationDate,isnull(vaccineName,'0') as VaccinationType,isnull(vaccineDose,'0') as VaccinationDose  from EmpDetails " +
                 " left join Cities C on C.cityID=EmpDetails.pecity " +
                 " left join Cities C1 on C1.cityID=EmpDetails.BirthDistrict " +
                 " left join Cities C2 on C2.cityID=EmpDetails.prCity " +
                 " where empid='" + empid + "'";
             DataTable dt = config.ExecuteAdaptorAsyncWithQueryParams(query).Result;
 
-            bool c = false;
-            if (String.IsNullOrEmpty(dt.Rows[0]["EmpStatus"].ToString()) == false)
-            {
-                c = Convert.ToBoolean(dt.Rows[0]["EmpStatus"].ToString());
-            }
-            if (c == true)
+            if (int.Parse(dt.Rows[0]["EmpStatus"].ToString()) == 1)
             {
                 rdbactive.Checked = true;
 
@@ -4790,7 +4802,39 @@ namespace Jawan.Portal
                 rdbResigned.Checked = true;
 
             }
+            #region Vaccination done by Mahesh Goud on 2021-09-23
+            if (dt.Rows[0]["VaccinationType"].ToString() == "")
+            {
+                ddlVaccinationType.SelectedIndex = 0;
+            }
+            else
+            {
+                ddlVaccinationType.SelectedValue = dt.Rows[0]["VaccinationType"].ToString();
+            }
+            if (dt.Rows[0]["VaccinationDose"].ToString() == "")
+            {
+                ddlVaccinationDose.SelectedIndex = 0;
+            }
+            else
+            {
+                ddlVaccinationDose.SelectedValue = dt.Rows[0]["VaccinationDose"].ToString();
+            }
+            if (String.IsNullOrEmpty(dt.Rows[0]["VaccinationDate"].ToString()) == false)
+            {
 
+                txtVaccinationdate.Text = DateTime.Parse(dt.Rows[0]["VaccinationDate"].ToString()).ToString("dd/MM/yyyy");
+                if (txtVaccinationdate.Text == "01/01/1900")
+                {
+                    txtVaccinationdate.Text = "";
+                }
+
+            }
+            else
+            {
+                txtVaccinationdate.Text = "";
+
+            }
+            #endregion
             string Employeetype = dt.Rows[0]["Employeetype"].ToString();
             if (Employeetype == "G")
             {

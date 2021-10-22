@@ -598,6 +598,15 @@ namespace Jawan.Portal {
         protected global::System.Web.UI.WebControls.DropDownList ddlWoff2;
         
         /// <summary>
+        /// ddlVaccinationDose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlVaccinationDose;
+        
+        /// <summary>
         /// txoldempid1 control.
         /// </summary>
         /// <remarks>
@@ -929,6 +938,42 @@ namespace Jawan.Portal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtForm;
+        
+        /// <summary>
+        /// ddlVaccinationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlVaccinationType;
+        
+        /// <summary>
+        /// txtVaccinationdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtVaccinationdate;
+        
+        /// <summary>
+        /// CalendarEVaccinationdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarEVaccinationdate;
+        
+        /// <summary>
+        /// FTBoxEVaccinationdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.FilteredTextBoxExtender FTBoxEVaccinationdate;
         
         /// <summary>
         /// rdsc control.

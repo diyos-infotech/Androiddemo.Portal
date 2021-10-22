@@ -518,6 +518,18 @@
                                                                 <td>&nbsp;
                                                                 </td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>Vaccination Dose
+                                                                </td>
+                                                                <td>
+                                                                    <asp:DropDownList ID="ddlVaccinationDose" TabIndex="34" runat="server" class="sdrop">
+                                                                        <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                                                        <asp:ListItem Value="1">First Dose</asp:ListItem>
+                                                                        <asp:ListItem Value="2">Second Dose</asp:ListItem>
+                                                                    </asp:DropDownList>
+
+                                                                </td>
+                                                            </tr>
 
                                                             <tr style="visibility: hidden">
                                                                 <td>Community/Classification </td>
@@ -769,7 +781,32 @@
                                                                 </cc1:FilteredTextBoxExtender>
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td>Vaccination Type
+                                                            </td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddlVaccinationType" TabIndex="35" runat="server" class="sdrop">
+                                                                    <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                                                    <asp:ListItem Value="1">COVISHIELD</asp:ListItem>
+                                                                    <asp:ListItem Value="2">COVAXIN</asp:ListItem>
+                                                                    <asp:ListItem Value="3">SPUTNIK V</asp:ListItem>
+                                                                </asp:DropDownList>
 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Vaccination date
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txtVaccinationdate" runat="server" CssClass="sinput" TabIndex="38"></asp:TextBox>
+                                                                <cc1:CalendarExtender ID="CalendarEVaccinationdate" runat="server" Enabled="true" TargetControlID="txtVaccinationdate"
+                                                                    Format="dd/MM/yyyy">
+                                                                </cc1:CalendarExtender>
+                                                                <cc1:FilteredTextBoxExtender ID="FTBoxEVaccinationdate" runat="server" Enabled="True" TargetControlID="txtVaccinationdate"
+                                                                    ValidChars="/0123456789">
+                                                                </cc1:FilteredTextBoxExtender>
+                                                            </td>
+                                                        </tr>
 
                                                     </table>
                                                 </div>
