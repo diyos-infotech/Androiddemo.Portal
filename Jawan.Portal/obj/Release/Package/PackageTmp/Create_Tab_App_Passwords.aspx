@@ -251,7 +251,7 @@
                                 </tr>
                                 <tr style="height: 40px" runat="server">
                                     <td>
-                                        <asp:DropDownList ID="ddlsiteposted" runat="server" CssClass="form-control" Width="55%" AutoPostBack="true"></asp:DropDownList>
+                                        <asp:DropDownList ID="ddlsiteposted" runat="server" OnSelectedIndexChanged="ddlsiteposted_SelectedIndexChanged" CssClass="form-control" Width="55%" AutoPostBack="true"></asp:DropDownList>
                                     </td>
 
                                     <td>

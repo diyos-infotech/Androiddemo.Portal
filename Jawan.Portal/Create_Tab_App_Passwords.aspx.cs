@@ -37,7 +37,23 @@ namespace Jawan.Portal
             }
         }
 
-
+        protected void Getdata()
+        {
+            string query = "select isnull(UserName,'') as UserName,isnull(Password,'') as Password from Logindetails_Android  where clientid='" + ddlsiteposted.SelectedValue + "' and companyid=6";
+            DataTable dt = config.PocketFameExecuteAdaptorAsyncWithQueryParams(query).Result;
+            if (dt.Rows.Count>0)
+            {
+                txtusrname.Text = dt.Rows[0]["UserName"].ToString();
+                txtPassword.Text= dt.Rows[0]["Password"].ToString();
+                txtConfirmPassword.Text = dt.Rows[0]["Password"].ToString();
+            }
+            else
+            {
+                txtusrname.Text = "";
+                txtPassword.Text ="";
+                txtConfirmPassword.Text = "";
+            }
+        }
 
         protected void LoadClientids()
         {
@@ -144,5 +160,9 @@ namespace Jawan.Portal
                 txtConfirmPassword.Text = "";
         }
 
+        protected void ddlsiteposted_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Getdata();
+        }
     }
 }
