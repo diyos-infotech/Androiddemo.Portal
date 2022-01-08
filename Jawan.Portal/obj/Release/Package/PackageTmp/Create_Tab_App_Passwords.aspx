@@ -106,14 +106,14 @@
             }
 
             if (evt.value.value != "") {
-                if (evt.value.length < 8) {
-                    alert("Error: Password must contain at least eight characters!");
+                if (evt.value.length < 3) {
+                    alert("Error: Password must contain at least four characters!");
                     document.getElementById("<%=txtPassword.ClientID %>").value = "";
                     evt.focus();
                     return false;
                 }
 
-                re = /[0-9]/;
+               <%-- re = /[0-9]/;
                 if (!re.test(evt.value)) {
                     alert("Error: password must contain at least one number (0-9)!");
                     document.getElementById("<%=txtPassword.ClientID %>").value = "";
@@ -126,7 +126,7 @@
                     document.getElementById("<%=txtPassword.ClientID %>").value = "";
                     evt.focus();
                     return false;
-                }
+                }--%>
 
 
                 <%--re = /^(?=.*\d+)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%]{8,8}$/;
@@ -255,7 +255,7 @@
                                     </td>
 
                                     <td>
-                                        <asp:TextBox ID="txtusrname" runat="server" Text="" onkeydown="return Check(event)" CssClass="form-control" Width="50%"></asp:TextBox>
+                                        <asp:TextBox ID="txtusrname" runat="server" AutoComplete="off" Text="" onkeydown="return Check(event)" CssClass="form-control" Width="50%"></asp:TextBox>
                                     </td>
 
                                 </tr>
@@ -270,12 +270,12 @@
                                 </tr>
                                 <tr style="height: 40px">
                                     <td>
-                                        <asp:TextBox ID="txtPassword" runat="server" onchange="onChangeTest(this)" onkeydown="return Check(event)" CssClass="form-control" Width="50%"></asp:TextBox>
+                                        <asp:TextBox ID="txtPassword" AutoComplete="off" runat="server" onchange="onChangeTest(this)" onkeydown="return Check(event)" CssClass="form-control" Width="50%"></asp:TextBox>
 
                                     </td>
 
                                     <td>
-                                        <asp:TextBox ID="txtConfirmPassword" TextMode="Password" runat="server" onpaste="return false;" CssClass="form-control" Width="50%"></asp:TextBox>
+                                        <asp:TextBox ID="txtConfirmPassword" AutoComplete="off" TextMode="Password" runat="server" onpaste="return false;" CssClass="form-control" Width="50%"></asp:TextBox>
                                         <asp:Label ID="lblerror" runat="server" ForeColor="Red"></asp:Label>
                                     </td>
                                 </tr>

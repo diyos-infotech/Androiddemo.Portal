@@ -124,7 +124,7 @@ namespace Jawan.Portal
 
 
           
-                string ChkQry = "select * from Logindetails_Android where companyid=6  ";
+                string ChkQry = "select * from Logindetails_Android where companyid=6 and clientid='" + ddlsiteposted.SelectedValue + "' ";
                 DataTable chkresult = config.PocketFameExecuteAdaptorAsyncWithQueryParams(ChkQry).Result;
                 if (chkresult.Rows.Count > 0)
                 {
@@ -143,7 +143,7 @@ namespace Jawan.Portal
                 }
                 else
                 {
-                    string insertquery = "insert into Logindetails_Android (UserName,	Password,	CompanyId,	CreatedDateTime	,UpdatedDateTime,ClientId) values ('" + txtusrname.Text.Trim() + "','" + txtConfirmPassword.Text.Trim() + "',6,Getdate(),Getdate(),'"+ddlsiteposted.SelectedValue+"')";
+                    string insertquery = "insert into Logindetails_Android (ID,Empid,UserName,	Password,	CompanyId,	CreatedDateTime	,UpdatedDateTime,ClientId,EmailId,Role,Rated) values (NewID(),1,'" + txtusrname.Text.Trim() + "','" + txtConfirmPassword.Text.Trim() + "',6,Getdate(),Getdate(),'"+ddlsiteposted.SelectedValue+"','Support@gmail.com',1,1)";
                     int insertresult = config.PocketFameExecuteNonQueryWithQueryAsync(insertquery).Result;
                     if (insertresult > 0)
                     {
