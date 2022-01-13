@@ -8,42 +8,233 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>REPORT: Pin My Visit</title>
     <link href="css/global.css" rel="stylesheet" type="text/css" />
-
     <link href="css/boostrap/css/bootstrap.css" rel="stylesheet" />
-    <script src="script/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="script/jscript.js"> </script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <style type="text/css">
-        .style2 {
-            font-size: 10pt;
-            font-weight: bold;
-            color: #333333;
-            background: #cccccc;
-            padding: 5px 5px 2px 10px;
-            border-bottom: 1px solid #999999;
-            height: 26px;
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-combobox-toggle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin-left: -1px;
+            padding: 0;
+        }
+
+        .custom-combobox-input {
+            margin: 0;
+            padding: 5px 10px;
+        }
+
+
+
+        .Grid th, .Grid td {
+            border: 1px solid #66CCFF;
         }
     </style>
+
     <script type="text/javascript">
 
-        function ShowPopup() {
-            $(function () {
-                $("#dialog").dialog({
-                    title: "Zoomed Image",
-                    width: 350,
-                    buttons: {
-                        Close: function () {
-                            $(this).dialog('close');
+        function setProperty() {
+            $.widget("custom.combobox", {
+                _create: function () {
+                    this.wrapper = $("<span>")
+                      .addClass("custom-combobox")
+                      .insertAfter(this.element);
 
+                    this.element.hide();
+                    this._createAutocomplete();
+                    this._createShowAllButton();
+                },
+
+                _createAutocomplete: function () {
+                    var selected = this.element.children(":selected"),
+                      value = selected.val() ? selected.text() : "";
+
+                    this.input = $("<input>")
+                      .appendTo(this.wrapper)
+                      .val(value)
+                      .attr("title", "")
+                      .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+                      .autocomplete({
+                          delay: 0,
+                          minLength: 0,
+                          source: $.proxy(this, "_source")
+                      })
+                      .tooltip({
+                          classes: {
+                              "ui-tooltip": "ui-state-highlight"
+                          }
+                      });
+
+                    this._on(this.input, {
+                        autocompleteselect: function (event, ui) {
+                            ui.item.option.selected = true;
+                            this._trigger("select", event, {
+                                item: ui.item.option
+                            });
+                        },
+
+                        autocompletechange: "_removeIfInvalid"
+                    });
+                },
+
+                _createShowAllButton: function () {
+                    var input = this.input,
+                      wasOpen = false;
+
+                    $("<a>")
+                      .attr("tabIndex", -1)
+                      .attr("title", "Show All Items")
+                      .tooltip()
+                      .appendTo(this.wrapper)
+                      .button({
+                          icons: {
+                              primary: "ui-icon-triangle-1-s"
+                          },
+                          text: false
+                      })
+                      .removeClass("ui-corner-all")
+                      .addClass("custom-combobox-toggle ui-corner-right")
+                      .on("mousedown", function () {
+                          wasOpen = input.autocomplete("widget").is(":visible");
+                      })
+                      .on("click", function () {
+                          input.trigger("focus");
+
+                          // Close if already visible
+                          if (wasOpen) {
+                              return;
+                          }
+
+                          // Pass empty string as value to search for, displaying all results
+                          input.autocomplete("search", "");
+                      });
+                },
+
+                _source: function (request, response) {
+                    var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                    response(this.element.children("option").map(function () {
+                        var text = $(this).text();
+                        if (this.value && (!request.term || matcher.test(text)))
+                            return {
+                                label: text,
+                                value: text,
+                                option: this
+                            };
+                    }));
+                },
+
+                _removeIfInvalid: function (event, ui) {
+
+                    // Selected an item, nothing to do
+                    if (ui.item) {
+                        return;
+                    }
+
+                    // Search for a match (case-insensitive)
+                    var value = this.input.val(),
+                      valueLowerCase = value.toLowerCase(),
+                      valid = false;
+                    this.element.children("option").each(function () {
+                        if ($(this).text().toLowerCase() === valueLowerCase) {
+                            this.selected = valid = true;
+                            return false;
                         }
-                    },
-                    modal: true
-                });
+                    });
+
+                    // Found a match, nothing to do
+                    if (valid) {
+                        return;
+                    }
+
+                    // Remove invalid value
+                    this.input
+                      .val("")
+                      .attr("title", value + " didn't match any item")
+                      .tooltip("open");
+                    this.element.val("");
+                    this._delay(function () {
+                        this.input.tooltip("close").attr("title", "");
+                    }, 2500);
+                    this.input.autocomplete("instance").term = "";
+                },
+
+                _destroy: function () {
+                    this.wrapper.remove();
+                    this.element.show();
+                }
             });
-        };
+            $(".ddlautocomplete").combobox({
+                select: function (event, ui) { $("#ddlEmpid").attr("data-clientId", ui.item.value); OnAutoCompleteDDLVendoridchange(event, ui); },
+                minLength: 4
+            });
+        }
+
+        $(document).ready(function () {
+            setProperty();
+        });
+
+        function OnAutoCompleteDDLVendoridchange(event, ui) {
+            $('#ddlEmpid').trigger('change');
+
+        }
+
+       
+        function Check_Click(objRef) {
+            //Get the Row based on checkbox
+            var row = objRef.parentNode.parentNode;
+            //Get the reference of GridView
+            var GridView = row.parentNode;
+
+            //Get all input elements in Gridview
+            var inputList = GridView.getElementsByTagName("input");
+
+            for (var i = 0; i < inputList.length; i++) {
+                //The First element is the Header Checkbox
+                var headerCheckBox = inputList[0];
+
+                //Based on all or none checkboxes
+                //are checked check/uncheck Header Checkbox
+                var checked = true;
+                if (inputList[i].type == "checkbox" && inputList[i] != headerCheckBox) {
+                    if (!inputList[i].checked) {
+                        checked = false;
+                        break;
+                    }
+                }
+            }
+            headerCheckBox.checked = checked;
+
+        }
+        function checkAll(objRef) {
+
+            var GridView = objRef.parentNode.parentNode.parentNode;
+            var inputList = GridView.getElementsByTagName("input");
+            for (var i = 0; i < inputList.length; i++) {
+                //Get the Cell To find out ColumnIndex
+                var row = inputList[i].parentNode.parentNode;
+                if (inputList[i].type == "checkbox" && objRef != inputList[i]) {
+                    if (objRef.checked) {
+                        //If the header checkbox is checked
+                        //check all checkboxes
+                        //and highlight all rows
+                        inputList[i].checked = true;
+                    }
+                    else {
+                        //If the header checkbox is checked
+                        //uncheck all checkboxes
+                        inputList[i].checked = false;
+                    }
+                }
+            }
+        }
 
         function onCalendarShown() {
 
@@ -90,46 +281,7 @@
             }
         }
 
-        function GetEmpid() {
-
-            $('txtEmpIDName').autocomplete({
-                source: function (request, response) {
-                    var Url = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
-                    var ajaxUrl = Url.substring(0, Url.lastIndexOf('/')) + "/Autocompletion.asmx/GetFormEmpIDNames";
-                    $.ajax({
-                        url: ajaxUrl,
-                        method: 'post',
-                        contentType: 'application/json;charset=utf-8',
-
-                        data: JSON.stringify({
-                            term: request.term,
-                        }),
-                        datatype: 'json',
-                        success: function (data) {
-                            response(data.d);
-                        },
-                        error: function (err) {
-                            alert(err);
-                        }
-                    });
-                },
-                minLength: 4
-
-            });
-        }
-
-
-
-
-
-
-
-
     </script>
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
 
 
@@ -251,7 +403,7 @@
                                         <td>Emp ID/Name
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtEmpIDName" runat="server" CssClass="form-control" Width="190px"></asp:TextBox>
+                                            <asp:DropDownList ID="ddlEmpid" runat="server" CssClass="ddlautocomplete chosen-select" Width="150px"></asp:DropDownList>
                                         </td>
                                         <td>
                                             <asp:Label ID="lblMonth" runat="server" Text="Month"></asp:Label>

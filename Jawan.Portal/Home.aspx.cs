@@ -91,8 +91,8 @@ namespace Jawan.Portal
             switch (int.Parse(Session["AccessLevel"].ToString()))
             {
                 case 1: //Admin
-                    Session["homepage"] = "Reminders.aspx";
-                    Response.Redirect("Reminders.aspx");
+                    Session["homepage"] = "Employees.aspx";
+                    Response.Redirect("Employees.aspx");
                     // Response.Redirect("Home.aspx");
 
                     //AppendLog("Redirecting to Employees");

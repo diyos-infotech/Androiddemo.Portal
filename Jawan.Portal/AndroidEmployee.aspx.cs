@@ -5098,7 +5098,7 @@ namespace Jawan.Portal
                     TxtIdCardValid.Text = "";
 
                 }
-                string imagequery = "select image from profileimage where emp_id='" + empid + "'";
+                string imagequery = "select image from empdetails_android where empid='" + empid + "'";
                 DataTable dtimage = config.ExecuteAdaptorAsyncWithQueryParams(imagequery).Result;
 
                 if (dtimage.Rows.Count > 0)

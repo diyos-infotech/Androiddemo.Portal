@@ -1687,6 +1687,8 @@ namespace KLTS.Data
             return DtCIds;
         }
 
+      
+
         public DataTable LoadCNames(string ClientIdPrefix, string BranchID)
         {
             string ProcedureName = "GetClientNames";

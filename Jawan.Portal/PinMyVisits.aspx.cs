@@ -47,7 +47,7 @@ namespace Jawan.Portal
                         Response.Redirect("login.aspx");
                     }
 
-
+                    FillEmpIDList();
 
                 }
             }
@@ -67,7 +67,22 @@ namespace Jawan.Portal
         }
 
 
+        protected void FillEmpIDList()
+        {
 
+            string Sqlqry = "Select Empid From Empdetails    where Empstatus=1 Order by  EmpId";
+            DataTable dt = config.ExecuteAdaptorAsyncWithQueryParams(Sqlqry).Result;
+            if (dt.Rows.Count > 0)
+            {
+                ddlEmpid.DataValueField = "Empid";
+                ddlEmpid.DataTextField = "Empid";
+                ddlEmpid.DataSource = dt;
+                ddlEmpid.DataBind();
+            }
+            ddlEmpid.Items.Insert(0, "--Select--");
+            ddlEmpid.Items.Insert(1, "ALL");
+
+        }
 
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -79,7 +94,7 @@ namespace Jawan.Portal
                 return;
             }
 
-            if (txtEmpIDName.Text.Trim().Length == 0)
+            if (ddlEmpid.SelectedIndex == 0)
             {
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Emp ID');", true);
@@ -99,14 +114,8 @@ namespace Jawan.Portal
 
             string Empid = "";
 
-            if (txtEmpIDName.Text.Length > 9)
-            {
-                Empid = txtEmpIDName.Text.Substring(0, 9);
-            }
-            else
-            {
-                Empid = txtEmpIDName.Text;
-            }
+
+            Empid = ddlEmpid.SelectedValue;
 
 
             string Spname = "GetPinMyvisitImages";
@@ -205,14 +214,8 @@ namespace Jawan.Portal
 
             string Empid = "";
 
-            if (txtEmpIDName.Text.Length > 9)
-            {
-                Empid = txtEmpIDName.Text.Substring(0, 9);
-            }
-            else
-            {
-                Empid = txtEmpIDName.Text;
-            }
+
+            Empid = ddlEmpid.SelectedValue;
 
             string Spname = "GetPinMyvisitImages";
 
@@ -250,7 +253,7 @@ namespace Jawan.Portal
                 return;
             }
 
-            if (txtEmpIDName.Text.Trim().Length == 0)
+            if (ddlEmpid.SelectedIndex == 0)
             {
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Emp ID');", true);
@@ -271,7 +274,7 @@ namespace Jawan.Portal
             string Empid = "";
             string DType = "Excel";
 
-            Empid = txtEmpIDName.Text;
+            Empid = ddlEmpid.SelectedValue;
 
 
             string Spname = "GetPinMyvisitImages";
@@ -311,7 +314,7 @@ namespace Jawan.Portal
             string Empid = "";
 
 
-            Empid = txtEmpIDName.Text;
+            Empid = ddlEmpid.SelectedValue;
 
 
 
@@ -375,7 +378,7 @@ namespace Jawan.Portal
                         cell.Colspan = 1;
                         tempTable1.AddCell(cell);
 
-                         cell = new PdfPCell(new Paragraph("Emp ID : " + dt.Rows[k]["UpdatedBy"].ToString(), FontFactory.GetFont(FontStyle, 11, Font.NORMAL, BaseColor.BLACK)));
+                        cell = new PdfPCell(new Paragraph("Emp ID : " + dt.Rows[k]["UpdatedBy"].ToString(), FontFactory.GetFont(FontStyle, 11, Font.NORMAL, BaseColor.BLACK)));
                         cell.HorizontalAlignment = 0;
                         cell.Border = 0;
                         cell.Colspan = 1;
@@ -400,7 +403,7 @@ namespace Jawan.Portal
                         cell.Colspan = 1;
                         tempTable1.AddCell(cell);
 
-                       
+
 
                         cell = new PdfPCell(new Paragraph("Remarks : " + dt.Rows[k]["Remarks"].ToString(), FontFactory.GetFont(FontStyle, 11, Font.NORMAL, BaseColor.BLACK)));
                         cell.HorizontalAlignment = 0;
@@ -481,7 +484,7 @@ namespace Jawan.Portal
 
 
 
-                string filename = txtEmpIDName.Text + ".pdf";
+                string filename = ddlEmpid.SelectedItem.Text + ".pdf";
 
                 document.Close();
                 Response.Clear();
