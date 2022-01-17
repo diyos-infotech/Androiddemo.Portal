@@ -232,12 +232,20 @@ namespace Jawan.Portal
 
             if (dt.Rows.Count > 0)
             {
-                string imageUrl = dt.Rows[0]["pitstopImage"].ToString();
-
                 if (dt.Rows[0]["pitstopImage"].ToString().Length > 0)
                 {
-                    imgphoto.ImageUrl = imageUrl;
+
+                    if (dt.Rows[0]["pitstopImage"].ToString().StartsWith("data"))
+                    {
+                        imgphoto.ImageUrl = dt.Rows[0]["pitstopImage"].ToString();
+                    }
+                    else
+                    {
+                        imgphoto.ImageUrl = "data:image/jpeg;base64," + dt.Rows[0]["pitstopImage"].ToString();
+                    }
+
                 }
+                
 
 
                 ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup();", true);
@@ -499,6 +507,20 @@ namespace Jawan.Portal
             }
 
 
+        }
+
+        protected void ddltype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddltype.SelectedIndex==0)
+            {
+                lblDay.Visible = true;
+                lblMonth.Visible = false;
+            }
+            else
+            {
+                lblDay.Visible = false;
+                lblMonth.Visible = true;
+            }
         }
     }
 }

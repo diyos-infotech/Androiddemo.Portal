@@ -177,6 +177,22 @@
             });
         }
 
+                function ShowPopup() {
+            $(function () {
+                $("#dialog").dialog({
+                    title: "Zoomed Image",
+                    width: 350,
+                    buttons: {
+                        Close: function () {
+                            $(this).dialog('close');
+
+                        }
+                    },
+                    modal: true
+                });
+            });
+        };
+
         $(document).ready(function () {
             setProperty();
         });
@@ -294,7 +310,6 @@
 
                 $(function () {
 
-                    GetEmpid();
 
                     $("[id*=GVpinmyvisit]").find("[id*=btnview]").click(function () {
 
@@ -397,7 +412,20 @@
                                 <div style="float: right">
                                     <asp:LinkButton ID="lbtn_Export" runat="server" OnClick="lbtn_Export_Click">Export to Excel</asp:LinkButton>
                                 </div>
-                                <table width="75%" style="margin: 0px auto">
+                                <table width="95%" style="margin: 10px auto">
+                                    <tr>
+                                        <td>Type</td>
+                                        <td>
+                                            <asp:DropDownList ID="ddltype" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddltype_SelectedIndexChanged" runat="server">
+                                                <asp:ListItem>Day Wise</asp:ListItem>
+                                                <asp:ListItem>Month Wise</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr style="height :10px">
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
                                     <tr>
 
                                         <td>Emp ID/Name
@@ -406,7 +434,8 @@
                                             <asp:DropDownList ID="ddlEmpid" runat="server" CssClass="ddlautocomplete chosen-select" Width="150px"></asp:DropDownList>
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblMonth" runat="server" Text="Month"></asp:Label>
+                                            <asp:Label ID="lblDay" runat="server" Text="Day"></asp:Label>
+                                            <asp:Label ID="lblMonth" runat="server" Visible="false" Text="Month"></asp:Label>
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtMonth" runat="server" class="sinput" autocomplete="off"></asp:TextBox>
