@@ -935,7 +935,7 @@
                                                         <td>
 
                                                             <asp:RadioButton ID="rdbsingle" TabIndex="8" runat="server" GroupName="m1" Text="Single" />
-                                                            <asp:RadioButton ID="rdbmarried" TabIndex="9" runat="server" GroupName="m1" Text="Married" Style="margin-left: 17px" Checked="true" />
+                                                            <asp:RadioButton ID="rdbmarried" TabIndex="9" runat="server" GroupName="m1" Text="Married" Style="margin-left: 17px"  />
 
                                                         </td>
 
@@ -1130,10 +1130,10 @@
                                                         <td>Community/Classification
                                                         </td>
                                                         <td style="padding-top: 10px">
-                                                            <asp:RadioButton ID="rdsc" runat="server" GroupName="m1" Text="SC" />
-                                                            <asp:RadioButton ID="rdst" runat="server" GroupName="m1" Text="ST" />
-                                                            <asp:RadioButton ID="rdobc" runat="server" GroupName="m1" Text="OBC" />
-                                                            <asp:RadioButton ID="rdur" runat="server" GroupName="m1" Text="Others"
+                                                            <asp:RadioButton ID="rdsc" runat="server" GroupName="m6" Text="SC" />
+                                                            <asp:RadioButton ID="rdst" runat="server" GroupName="m6" Text="ST" />
+                                                            <asp:RadioButton ID="rdobc" runat="server" GroupName="m6" Text="OBC" />
+                                                            <asp:RadioButton ID="rdur" runat="server" GroupName="m6" Text="Others"
                                                                 Checked="true" />
                                                         </td>
                                                     </tr>

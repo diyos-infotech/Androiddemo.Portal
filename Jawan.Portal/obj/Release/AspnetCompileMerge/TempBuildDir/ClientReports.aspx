@@ -230,6 +230,8 @@
                         <li><a href="LeaveSetUpGrid.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Leave Set Up</span> </a></li>
                         <li><a href="Delete_Android_Attendance.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Delete Android Attendance</span> </a></li>
 
+                        <li><a href="PocketFaMECredentials.aspx" style="height: 130px"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Pocket FaME Credentials</span> </a></li>
+
                     </ul>
                     <div class="clear">
                     </div>

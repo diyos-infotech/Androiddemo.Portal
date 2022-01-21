@@ -3,8 +3,8 @@
   <PropertyGroup>
     <UseIISExpress>true</UseIISExpress>
     <ProjectView>ShowAllFiles</ProjectView>
-    <NameOfLastUsedPublishProfile>AndroidDemo</NameOfLastUsedPublishProfile>
-    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
+    <NameOfLastUsedPublishProfile>D:\GitProjects\Androiddemo.Portal\Jawan.Portal\Properties\PublishProfiles\AndroidDemo.pubxml</NameOfLastUsedPublishProfile>
+    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />

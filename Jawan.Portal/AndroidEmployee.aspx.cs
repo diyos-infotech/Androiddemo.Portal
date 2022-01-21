@@ -441,7 +441,7 @@ namespace Jawan.Portal
 
         private void AndroidEmpid()
         {
-            string query = "select empid from Empdetails_Android where isnull(EmpAndroidStatus,0)=0 and isnull(EmpRejectStatus,0) =0 order by empid";
+            string query = "select empid from Empdetails_Android where isnull(EmpAndroidStatus,0)=0 and isnull(EmpRejectStatus,0) =0 order by empid desc";
             DataTable dtemp = config.ExecuteAdaptorAsyncWithQueryParams(query).Result;
             if (dtemp.Rows.Count > 0)
             {
@@ -609,7 +609,7 @@ namespace Jawan.Portal
             {
 
 
-                CheckEmpid();
+               
 
 
                 #region  Begin  Check Validations as on  [18-09-2013]
@@ -631,18 +631,6 @@ namespace Jawan.Portal
 
 
 
-
-                string Checkempid = "select empid from empdetails where empid='" + txtEmID.Text + "'";
-                DataTable dtempid = config.ExecuteAdaptorAsyncWithQueryParams(Checkempid).Result;
-                if (dtempid.Rows.Count > 0)
-                {
-                    if (rdbGeneral.Checked == true || rdbStaff.Checked == true)
-                    {
-                        employeeid();
-                        //lblMsg.Text = "This Employee Id No: '" + txtEmID.Text + "' is already exist";
-                        //return;
-                    }
-                }
 
                 #endregion     /*End  Validation For Empid Validation */
 
@@ -969,44 +957,7 @@ namespace Jawan.Portal
 
                 #endregion End   Check Validations as on  [18-09-2013]
 
-                #region esi no
-
-
-                string ESINo = txtESINum.Text;
-                string ChEmpESINo = "";
-                int esino = 0;
-
-                if (txtESINum.Text.Trim().Length != 0)
-                {
-                    string SelBankacno = "select EmpESINo,EMPESICodes.Empid from EMPESICodes inner join empdetails ed on ed.empid=EMPESICodes.empid where ed.empid!='" + txtEmID.Text + "' and  ed.empstatus=1";
-                    DataTable dtBAcno = config.ExecuteReaderWithQueryAsync(SelBankacno).Result;
-
-                    for (int i = 0; i < dtBAcno.Rows.Count; i++)
-                    {
-                        if (ESINo == dtBAcno.Rows[i]["EmpESINo"].ToString())
-                        {
-                            ChEmpESINo = dtBAcno.Rows[i]["Empid"].ToString();
-                            esino = 1;
-                            break;
-                        }
-                        else
-                        {
-                            esino = 0;
-                        }
-                    }
-
-                }
-                if (esino == 1)
-                {
-                    lblMsg.Text = "Employee details not saved because ESI Number '" + ESINo + "'already exists for Employee '" + ChEmpESINo + "'";
-                    txtESINum.Text = "";
-                    // ScriptManager.RegisterStartupScript(this, GetType(), "Show alert", "alert('Bank \"" + EmpBankAcNo + "\"Number already Exist for Employee \"" + EmpbankAcNoEmpid + "\"');", true);
-                    return;
-                }
-
-
-
-                #endregion
+             
 
                 #region  for validations of PF,ESI ,BANK AC NO ,AADHAR NO,UAN NO by sharada on 26/01/2017
 
@@ -1018,7 +969,7 @@ namespace Jawan.Portal
 
                 if (txtBankAccNum.Text.Trim().Length != 0)
                 {
-                    string SelBankacno = "select EmpBankAcNo,Empid from EmpDetails  where empid!='" + txtEmID.Text + "' and   empstatus=1";
+                    string SelBankacno = "select EmpBankAcNo,Empid from EmpDetails_android  where empid!='" + txtEmID.Text + "' ";
                     DataTable dtBAcno = config.ExecuteReaderWithQueryAsync(SelBankacno).Result;
 
                     for (int i = 0; i < dtBAcno.Rows.Count; i++)
@@ -1053,7 +1004,7 @@ namespace Jawan.Portal
                 {
 
 
-                    string Selaadhaarid = "select AadharCardNo,EmpProofDetails.Empid from EmpProofDetails inner join empdetails ed on ed.empid=EmpProofDetails.empid where ed.empid!='" + txtEmID.Text + "' and   ed.empstatus=1";
+                    string Selaadhaarid = "select AadharCardNo,EmpProofDetails.Empid from EmpProofDetails_android as EmpProofDetails inner join empdetails_android ed on ed.empid=EmpProofDetails.empid where ed.empid!='" + txtEmID.Text + "' and   ed.empstatus=1";
                     DataTable dtaadhaarid = config.ExecuteReaderWithQueryAsync(Selaadhaarid).Result;
 
                     for (int i = 0; i < dtaadhaarid.Rows.Count; i++)
@@ -1081,81 +1032,10 @@ namespace Jawan.Portal
 
                 #endregion  of aadhar no
 
-                #region pf no
+             
 
 
-                string PFNo = txtEmpPFNumber.Text;
-                string EmpPFNo = "";
-                int pfno = 0;
-
-                if (txtEmpPFNumber.Text.Trim().Length != 0)
-                {
-                    string SelBankacno = "select EmpEpfNo,EMPEPFCodes.Empid from EMPEPFCodes inner join empdetails ed on ed.empid=EMPEPFCodes.empid where ed.empid!='" + txtEmID.Text + "' and   ed.empstatus=1";
-                    DataTable dtBAcno = config.ExecuteReaderWithQueryAsync(SelBankacno).Result;
-
-                    for (int i = 0; i < dtBAcno.Rows.Count; i++)
-                    {
-                        if (PFNo == dtBAcno.Rows[i]["EmpEpfNo"].ToString())
-                        {
-                            EmpPFNo = dtBAcno.Rows[i]["Empid"].ToString();
-                            pfno = 1;
-                            break;
-                        }
-                        else
-                        {
-                            pfno = 0;
-                        }
-                    }
-
-                }
-                if (pfno == 1)
-                {
-                    lblMsg.Text = "Employee details not saved because PF Number '" + PFNo + "'already exists for Employee '" + EmpPFNo + "'";
-                    txtEmpPFNumber.Text = "";
-                    // ScriptManager.RegisterStartupScript(this, GetType(), "Show alert", "alert('Bank \"" + EmpBankAcNo + "\"Number already Exist for Employee \"" + EmpbankAcNoEmpid + "\"');", true);
-                    return;
-                }
-
-
-
-                #endregion
-
-
-                #region validations of UAN no
-                //Duplicate Bank a/c no 
-                string EmpUANNo = txtSSNumber.Text;
-                string EmpUANNoEmpid = "";
-                int uanno = 0;
-
-                if (txtSSNumber.Text.Trim().Length != 0)
-                {
-                    string SelBankacno = "select EmpUANNumber,Empid from EmpDetails  where empid!='" + txtEmID.Text + "' and   empstatus=1";
-                    DataTable dtBAcno = config.ExecuteReaderWithQueryAsync(SelBankacno).Result;
-
-                    for (int i = 0; i < dtBAcno.Rows.Count; i++)
-                    {
-                        if (EmpUANNo == dtBAcno.Rows[i]["EmpUANNumber"].ToString())
-                        {
-                            EmpUANNoEmpid = dtBAcno.Rows[i]["Empid"].ToString();
-                            uanno = 1;
-                            break;
-                        }
-                        else
-                        {
-                            uanno = 0;
-                        }
-                    }
-
-                }
-                if (uanno == 1)
-                {
-                    lblMsg.Text = "Employee details not saved because UAN Number '" + EmpUANNo + "'already exists for Employee '" + EmpUANNoEmpid + "'";
-                    txtSSNumber.Text = "";
-                    // ScriptManager.RegisterStartupScript(this, GetType(), "Show alert", "alert('Bank \"" + EmpBankAcNo + "\"Number already Exist for Employee \"" + EmpbankAcNoEmpid + "\"');", true);
-                    return;
-                }
-                #endregion of UAN no
-
+            
 
 
 
@@ -5296,7 +5176,6 @@ namespace Jawan.Portal
                         ddlpreCity.DataTextField = "City";
                         ddlpreCity.DataSource = CityDt;
                         ddlpreCity.DataBind();
-                        ddlpreCity.Items.Insert(0, new ListItem("--Select--", "0"));
                     }
                 }
                 else
@@ -5310,9 +5189,13 @@ namespace Jawan.Portal
                         ddlpreCity.DataTextField = "City";
                         ddlpreCity.DataSource = CityDt;
                         ddlpreCity.DataBind();
-                        ddlpreCity.Items.Insert(0, new ListItem("--Select--", "0"));
+                        
                     }
                 }
+                
+
+                ddlpreCity.Items.Insert(0, new ListItem("--Select--", "0"));
+
                 if (dt.Rows[0]["prcity"].ToString().Length > 0)
                 {
                     if (dt.Rows[0]["prcity"].ToString() == "0" || dt.Rows[0]["prcity"].ToString() == " " || dt.Rows[0]["prcity"].ToString() == "  ")
@@ -5357,7 +5240,6 @@ namespace Jawan.Portal
                         ddlcity.DataTextField = "City";
                         ddlcity.DataSource = CityDt;
                         ddlcity.DataBind();
-                        ddlcity.Items.Insert(0, new ListItem("--Select--", "0"));
                     }
                 }
                 else
@@ -5371,9 +5253,10 @@ namespace Jawan.Portal
                         ddlcity.DataTextField = "City";
                         ddlcity.DataSource = CityDt;
                         ddlcity.DataBind();
-                        ddlcity.Items.Insert(0, new ListItem("--Select--", "0"));
                     }
                 }
+                ddlcity.Items.Insert(0, new ListItem("--Select--", "0"));
+
                 if (dt.Rows[0]["peCity"].ToString().Length > 0)
                 {
                     if (dt.Rows[0]["peCity"].ToString() == "0" || dt.Rows[0]["peCity"].ToString() == " " || dt.Rows[0]["peCity"].ToString() == "  ")

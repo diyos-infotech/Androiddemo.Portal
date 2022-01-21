@@ -105,6 +105,8 @@
                 <div class="contentarea" id="contentarea">
                     <ul class="shortcuts-s" style="margin-left: 13px">
                         <li><a href="CreateLogin.aspx"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Create Login</span> </a></li>
+                        <li><a href="CreatePocketFameLogin.aspx"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Create Pocket FaME Login</span> </a></li>
+
                         <li><a href="ChangePassword.aspx"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Change Password</span> </a></li>
                         <li><a href="Department.aspx"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Department</span> </a></li>
                         <li><a href="Designation.aspx"><span class="shortcuts-icon iconsi-event"></span><span class="shortcuts-label">Designation</span> </a></li>

@@ -123,12 +123,14 @@
     <Content Include="AndroidEmployee.aspx" />
     <Content Include="assets\chosen-sprite.png" />
     <Content Include="ClientManPowerReq.aspx" />
+    <Content Include="CreatePocketFameLogin.aspx" />
     <Content Include="Create_Tab_App_Passwords.aspx" />
     <Content Include="Create_UserFeature.aspx" />
     <Content Include="css\assets\clmanicon.png" />
     <Content Include="css\assets\DeleteIcon.png" />
     <Content Include="css\Marketing.css" />
     <Content Include="Delete_Android_Attendance.aspx" />
+    <Content Include="DownloadPayslip.aspx" />
     <Content Include="EmployeeLeaveSetUp.aspx" />
     <Content Include="EmpShiftDetails.aspx" />
     <Content Include="Enable_or_Disable_Pin_My_Visit.aspx" />
@@ -201,6 +203,7 @@
     <Content Include="plugins\datatables\extensions\TableTools\Readme.md" />
     <Content Include="plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="PocketFaMECredentials.aspx" />
     <Content Include="script\BitString.as" />
     <Content Include="script\JPGEncoder.as" />
     <Content Include="script\jscam.as" />
@@ -1751,6 +1754,13 @@
     <Compile Include="CreateLogin.aspx.designer.cs">
       <DependentUpon>CreateLogin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CreatePocketFameLogin.aspx.cs">
+      <DependentUpon>CreatePocketFameLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreatePocketFameLogin.aspx.designer.cs">
+      <DependentUpon>CreatePocketFameLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Create_Tab_App_Passwords.aspx.cs">
       <DependentUpon>Create_Tab_App_Passwords.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1861,6 +1871,13 @@
     </Compile>
     <Compile Include="Division.aspx.designer.cs">
       <DependentUpon>Division.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DownloadPayslip.aspx.cs">
+      <DependentUpon>DownloadPayslip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DownloadPayslip.aspx.designer.cs">
+      <DependentUpon>DownloadPayslip.aspx</DependentUpon>
     </Compile>
     <Compile Include="DummyTransfer.aspx.cs">
       <DependentUpon>DummyTransfer.aspx</DependentUpon>
@@ -2729,6 +2746,13 @@
     </Compile>
     <Compile Include="PinMyVisits.aspx.designer.cs">
       <DependentUpon>PinMyVisits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PocketFaMECredentials.aspx.cs">
+      <DependentUpon>PocketFaMECredentials.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PocketFaMECredentials.aspx.designer.cs">
+      <DependentUpon>PocketFaMECredentials.aspx</DependentUpon>
     </Compile>
     <Compile Include="POInFlowDetailsReport.aspx.cs">
       <DependentUpon>POInFlowDetailsReport.aspx</DependentUpon>
