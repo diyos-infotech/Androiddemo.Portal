@@ -45,8 +45,8 @@
             $.widget("custom.combobox", {
                 _create: function () {
                     this.wrapper = $("<span>")
-                      .addClass("custom-combobox")
-                      .insertAfter(this.element);
+                        .addClass("custom-combobox")
+                        .insertAfter(this.element);
 
                     this.element.hide();
                     this._createAutocomplete();
@@ -55,23 +55,23 @@
 
                 _createAutocomplete: function () {
                     var selected = this.element.children(":selected"),
-                      value = selected.val() ? selected.text() : "";
+                        value = selected.val() ? selected.text() : "";
 
                     this.input = $("<input>")
-                      .appendTo(this.wrapper)
-                      .val(value)
-                      .attr("title", "")
-                      .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
-                      .autocomplete({
-                          delay: 0,
-                          minLength: 0,
-                          source: $.proxy(this, "_source")
-                      })
-                      .tooltip({
-                          classes: {
-                              "ui-tooltip": "ui-state-highlight"
-                          }
-                      });
+                        .appendTo(this.wrapper)
+                        .val(value)
+                        .attr("title", "")
+                        .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+                        .autocomplete({
+                            delay: 0,
+                            minLength: 0,
+                            source: $.proxy(this, "_source")
+                        })
+                        .tooltip({
+                            classes: {
+                                "ui-tooltip": "ui-state-highlight"
+                            }
+                        });
 
                     this._on(this.input, {
                         autocompleteselect: function (event, ui) {
@@ -87,35 +87,35 @@
 
                 _createShowAllButton: function () {
                     var input = this.input,
-                      wasOpen = false;
+                        wasOpen = false;
 
                     $("<a>")
-                      .attr("tabIndex", -1)
-                      .attr("title", "Show All Items")
-                      .tooltip()
-                      .appendTo(this.wrapper)
-                      .button({
-                          icons: {
-                              primary: "ui-icon-triangle-1-s"
-                          },
-                          text: false
-                      })
-                      .removeClass("ui-corner-all")
-                      .addClass("custom-combobox-toggle ui-corner-right")
-                      .on("mousedown", function () {
-                          wasOpen = input.autocomplete("widget").is(":visible");
-                      })
-                      .on("click", function () {
-                          input.trigger("focus");
+                        .attr("tabIndex", -1)
+                        .attr("title", "Show All Items")
+                        .tooltip()
+                        .appendTo(this.wrapper)
+                        .button({
+                            icons: {
+                                primary: "ui-icon-triangle-1-s"
+                            },
+                            text: false
+                        })
+                        .removeClass("ui-corner-all")
+                        .addClass("custom-combobox-toggle ui-corner-right")
+                        .on("mousedown", function () {
+                            wasOpen = input.autocomplete("widget").is(":visible");
+                        })
+                        .on("click", function () {
+                            input.trigger("focus");
 
-                          // Close if already visible
-                          if (wasOpen) {
-                              return;
-                          }
+                            // Close if already visible
+                            if (wasOpen) {
+                                return;
+                            }
 
-                          // Pass empty string as value to search for, displaying all results
-                          input.autocomplete("search", "");
-                      });
+                            // Pass empty string as value to search for, displaying all results
+                            input.autocomplete("search", "");
+                        });
                 },
 
                 _source: function (request, response) {
@@ -140,8 +140,8 @@
 
                     // Search for a match (case-insensitive)
                     var value = this.input.val(),
-                      valueLowerCase = value.toLowerCase(),
-                      valid = false;
+                        valueLowerCase = value.toLowerCase(),
+                        valid = false;
                     this.element.children("option").each(function () {
                         if ($(this).text().toLowerCase() === valueLowerCase) {
                             this.selected = valid = true;
@@ -156,9 +156,9 @@
 
                     // Remove invalid value
                     this.input
-                      .val("")
-                      .attr("title", value + " didn't match any item")
-                      .tooltip("open");
+                        .val("")
+                        .attr("title", value + " didn't match any item")
+                        .tooltip("open");
                     this.element.val("");
                     this._delay(function () {
                         this.input.tooltip("close").attr("title", "");
@@ -173,11 +173,14 @@
             });
             $(".ddlautocomplete").combobox({
                 select: function (event, ui) { $("#ddlEmpid").attr("data-clientId", ui.item.value); OnAutoCompleteDDLVendoridchange(event, ui); },
+                select: function (event, ui) { $("#ddlClientID").attr("data-clientId", ui.item.value); OnAutoCompleteDDLClientidchange(event, ui); },
+                select: function (event, ui) { $("#ddlCName").attr("data-clientId", ui.item.value); OnAutoCompleteDDLClientnamechange(event, ui); },
+                select: function (event, ui) { $("#ddlFOID").attr("data-clientId", ui.item.value); OnAutoCompleteDDLFoidchange(event, ui); },
                 minLength: 4
             });
         }
 
-                function ShowPopup() {
+        function ShowPopup() {
             $(function () {
                 $("#dialog").dialog({
                     title: "Zoomed Image",
@@ -201,8 +204,19 @@
             $('#ddlEmpid').trigger('change');
 
         }
+        function OnAutoCompleteDDLClientidchange(event, ui) {
+            $('#ddlClientID').trigger('change');
 
-       
+        }
+
+        function OnAutoCompleteDDLClientnamechange(event, ui) {
+
+            $('#ddlCName').trigger('change');
+        }
+        function OnAutoCompleteDDLFoidchange(event, ui) {
+
+            $('#ddlFOID').trigger('change');
+        }
         function Check_Click(objRef) {
             //Get the Row based on checkbox
             var row = objRef.parentNode.parentNode;
@@ -412,31 +426,59 @@
                                 <div style="float: right">
                                     <asp:LinkButton ID="lbtn_Export" runat="server" OnClick="lbtn_Export_Click">Export to Excel</asp:LinkButton>
                                 </div>
-                                <table width="95%" style="margin: 10px auto">
+                                <table width="100%" style="margin: 10px auto">
                                     <tr>
                                         <td>Type</td>
                                         <td>
                                             <asp:DropDownList ID="ddltype" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddltype_SelectedIndexChanged" runat="server">
                                                 <asp:ListItem>Day Wise</asp:ListItem>
                                                 <asp:ListItem>Month Wise</asp:ListItem>
+                                                <asp:ListItem>From To</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td>Option</td>
+                                        <td>
+                                            <asp:DropDownList ID="ddloption" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddloption_SelectedIndexChanged" runat="server">
+                                                <asp:ListItem>Employee Wise</asp:ListItem>
+                                                <asp:ListItem>Client Wise</asp:ListItem>
+                                                <asp:ListItem>Activity</asp:ListItem>
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
-                                    <tr style="height :10px">
-                                        <td></td>
-                                        <td></td>
+                                    <tr>
+
+                                        <td>
+                                            <asp:Label runat="server" ID="lblclientid" Visible="false" Text="Client ID"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlClientID" Visible="false" runat="server" CssClass="ddlautocomplete chosen-select" AutoPostBack="True" OnSelectedIndexChanged="ddlClientID_SelectedIndexChanged"
+                                                Width="120px">
+                                            </asp:DropDownList>
+                                        </td>
+
+                                        <td>
+                                            <asp:Label runat="server" Visible="false" ID="lblclientname" Text="Name"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlCName" Visible="false" runat="server" placeholder="select" CssClass="ddlautocomplete chosen-select" AutoPostBack="true" OnSelectedIndexChanged="ddlCName_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+
                                     </tr>
                                     <tr>
 
-                                        <td>Emp ID/Name
+                                        <td>
+                                            <asp:Label runat="server" ID="lblempid" Text="Emp ID/Name"></asp:Label>
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="ddlEmpid" runat="server" CssClass="ddlautocomplete chosen-select" Width="150px"></asp:DropDownList>
                                         </td>
+
                                         <td>
                                             <asp:Label ID="lblDay" runat="server" Text="Day"></asp:Label>
                                             <asp:Label ID="lblMonth" runat="server" Visible="false" Text="Month"></asp:Label>
                                         </td>
+                                        
                                         <td>
                                             <asp:TextBox ID="txtMonth" runat="server" class="sinput" autocomplete="off"></asp:TextBox>
                                             <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="true" TargetControlID="txtMonth"
@@ -447,15 +489,61 @@
                                             </cc1:FilteredTextBoxExtender>
 
                                         </td>
+                                         <td>
+                                            <asp:Button ID="btnSubmit" runat="server" Text="Submit" class=" btn save" OnClick="btnSubmit_Click" ToolTip="Submit" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label Visible="false" runat="server" ID="lblActivity" Text="Activity"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlFOID" runat="server" Visible="false" CssClass="ddlautocomplete chosen-select"
+                                                Width="120px">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
 
                                         <td>
-                                            <asp:Button ID="btnSubmit" runat="server" Text="Submit" class=" btn save" OnClick="btnSubmit_Click" ToolTip="Submit" />
+                                            <asp:Label ID="lblfrom" runat="server" Visible="false" Text="From"></asp:Label>
+                                        </td>
+
+                                        <td>
+                                            <asp:TextBox ID="txtfrom" runat="server" Visible="false" autocomplete="off" class="form-control" Width="200px"></asp:TextBox>
+                                            <cc1:CalendarExtender ID="txtfrom_CalendarExtender" runat="server" BehaviorID="calendar1"
+                                                Enabled="true" Format="dd/MM/yyyy" TargetControlID="txtfrom">
+                                            </cc1:CalendarExtender>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblto" runat="server" Visible="false" Text="To"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtto" runat="server" Visible="false" autocomplete="off" class="form-control" Width="200px"></asp:TextBox>
+                                            <cc1:CalendarExtender ID="txtto_CalendarExtender" runat="server" BehaviorID="calendar2"
+                                                Enabled="true" Format="dd/MM/yyyy" TargetControlID="txtto">
+                                            </cc1:CalendarExtender>
+                                        </td>
+
+                                    </tr>
+
+
+
+                                </table>
+                                <table>
+                                    <tr>
+                                       
+                                        <td>
+
                                         </td>
                                         <td>
                                             <asp:Button ID="Button1" runat="server" Text="PDF" class=" btn save" OnClick="Button1_Click" ToolTip="Submit" />
                                         </td>
                                     </tr>
                                 </table>
+
+
 
                                 <div style="width: 100%; margin-top: 30px">
 
@@ -472,7 +560,11 @@
                                             <asp:BoundField DataField="UpdatedBy" HeaderText="Emp ID" />
                                             <asp:BoundField DataField="EmpFName" HeaderText="Name" />
                                             <asp:BoundField DataField="Clientid" HeaderText="Client ID" />
-                                            <asp:BoundField DataField="UpdatedOn" HeaderText="Created On" />
+                                            <asp:TemplateField HeaderText="Created On" ItemStyle-Width="60px">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUpdatedOn" runat="server" Text='<%#Eval("UpdatedOn", "{0:dd/MM/yyyy}")%>'></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                             <asp:BoundField DataField="EmpRemarks" HeaderText="Remarks" />
                                             <asp:BoundField DataField="Activity" HeaderText="Activity" />
                                             <asp:BoundField DataField="CheckinLat" HeaderText="Checkin Lat" />
@@ -501,7 +593,6 @@
 
                                     <asp:Image ID="imgphoto" runat="server" Width="320" Height="300" />
                                 </div>
-
                             </div>
                         </div>
                         <!-- DASHBOARD CONTENT END -->

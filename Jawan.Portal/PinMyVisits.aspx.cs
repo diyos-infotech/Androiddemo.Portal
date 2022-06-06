@@ -48,7 +48,9 @@ namespace Jawan.Portal
                     }
 
                     FillEmpIDList();
-
+                    LoadClientList();
+                    LoadClientNames();
+                    LoadActivityDropdown();
                 }
             }
             catch (Exception ex)
@@ -84,38 +86,141 @@ namespace Jawan.Portal
 
         }
 
+        protected void LoadClientNames()
+        {
+            string query = "select distinct p.clientid,c.clientname from Pitstop p inner join Demo_Android_New.dbo.clients c on c.clientid=p.clientid where companyid=6 and p.clientid is not null";
+            DataTable DtClientids = config.PocketFameExecuteAdaptorAsyncWithQueryParams(query).Result;
+            if (DtClientids.Rows.Count > 0)
+            {
+                ddlCName.DataValueField = "Clientid";
+                ddlCName.DataTextField = "clientname";
+                ddlCName.DataSource = DtClientids;
+                ddlCName.DataBind();
+            }
+            ddlCName.Items.Insert(0, "-Select-");
+            ddlCName.Items.Insert(1, "ALL");
+
+        }
+
+        protected void LoadActivityDropdown()
+        {
+            string query = "select * from ActivityDropdown";
+            DataTable DtopmEmpsIDs = config.PocketFameExecuteAdaptorAsyncWithQueryParams(query).Result;
+
+            if (DtopmEmpsIDs.Rows.Count > 0)
+            {
+                ddlFOID.DataValueField = "ActivityId";
+                ddlFOID.DataTextField = "ActivityName";
+                ddlFOID.DataSource = DtopmEmpsIDs;
+                ddlFOID.DataBind();
+            }
+            ddlFOID.Items.Insert(0, "-Select-");
+        }
+
+        protected void LoadClientList()
+        {
+            string query = "select distinct clientid from Pitstop where companyid=6 and clientid is not null";
+            DataTable DtClientNames = config.PocketFameExecuteAdaptorAsyncWithQueryParams(query).Result;
+            if (DtClientNames.Rows.Count > 0)
+            {
+                ddlClientID.DataValueField = "clientid";
+                ddlClientID.DataTextField = "clientid";
+                ddlClientID.DataSource = DtClientNames;
+                ddlClientID.DataBind();
+            }
+            ddlClientID.Items.Insert(0, "-Select-");
+            ddlClientID.Items.Insert(1, "ALL");
+        }
+
+        protected void ddlCName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearData();
+            if (ddlCName.SelectedIndex > 0)
+            {
+                txtMonth.Text = "";
+                ddlClientID.SelectedValue = ddlCName.SelectedValue;
+
+            }
+            else
+            {
+                ddlClientID.SelectedIndex = 0;
+            }
+        }
+
+        protected void ddlClientID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+            if (ddlClientID.SelectedIndex > 0)
+            {
+                txtMonth.Text = "";
+                ddlCName.SelectedValue = ddlClientID.SelectedValue;
+            }
+            else
+            {
+                ddlCName.SelectedIndex = 0;
+            }
+        }
+
+        protected void ClearData()
+        {
+            GVpinmyvisit.DataSource = null;
+            GVpinmyvisit.DataBind();
+        }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (txtMonth.Text.Trim().Length == 0)
-            {
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Month');", true);
-                return;
-            }
-
-            if (ddlEmpid.SelectedIndex == 0)
-            {
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Emp ID');", true);
-                return;
-            }
 
             string date = string.Empty;
+            string Fromdate = string.Empty;
+            string Todate = string.Empty;
 
-            if (txtMonth.Text.Trim().Length > 0)
+            string Day = "";
+            string month = "";
+            string Year = "";
+
+
+            if (ddltype.SelectedIndex == 0 || ddltype.SelectedIndex == 1)
             {
-                date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                if (txtMonth.Text.Trim().Length > 0)
+                {
+                    date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
+
+                Day = DateTime.Parse(date).Day.ToString();
+                month = DateTime.Parse(date).Month.ToString();
+                Year = DateTime.Parse(date).Year.ToString();
+            }
+            else
+            {
+                if (txtfrom.Text.Trim().Length > 0)
+                {
+                    Fromdate = DateTime.Parse(txtfrom.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
+                if (txtto.Text.Trim().Length > 0)
+                {
+                    Todate = DateTime.Parse(txtto.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
             }
 
-            string Day = DateTime.Parse(date).Day.ToString();
-            string month = DateTime.Parse(date).Month.ToString();
-            string Year = DateTime.Parse(date).Year.ToString();
 
             string Empid = "";
+            string Clientid = "";
+            string Activity = "";
 
+            if (ddloption.SelectedIndex == 0)
+            {
+                Empid = ddlEmpid.SelectedValue;
+            }
 
-            Empid = ddlEmpid.SelectedValue;
+            if (ddloption.SelectedIndex == 1)
+            {
+                Clientid = ddlClientID.SelectedValue;
+            }
+            else if (ddloption.SelectedIndex == 2)
+            {
+                Activity = ddlFOID.SelectedItem.Text;
+            }
 
 
             string Spname = "GetPinMyvisitImages";
@@ -125,8 +230,13 @@ namespace Jawan.Portal
             ht.Add("@Year", Year);
             ht.Add("@CompanyID", "6");
             ht.Add("@Empid", Empid);
+            ht.Add("@Clientid", Clientid);
             ht.Add("@Type", "GetData");
-
+            ht.Add("@Option", ddloption.SelectedIndex);
+            ht.Add("@fromDate", Fromdate);
+            ht.Add("@ToDate", Todate);
+            ht.Add("@Activity", Activity);
+            ht.Add("@typewise", ddltype.SelectedIndex);
             DataTable dt = config.ExecuteAdaptorAsyncWithParams(Spname, ht).Result;
             if (dt.Rows.Count > 0)
             {
@@ -193,96 +303,122 @@ namespace Jawan.Portal
 
         protected void btnGetImage_Click(object sender, EventArgs e)
         {
-            if (txtMonth.Text.Trim().Length == 0)
+
+
+            for (int i = 0; i < GVpinmyvisit.Rows.Count; i++)
             {
+                Label lblUpdatedOn = GVpinmyvisit.Rows[i].FindControl("lblUpdatedOn") as Label;
 
-                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Month');", true);
-                return;
-            }
+                txtMonth.Text = lblUpdatedOn.Text;
 
-            string date = string.Empty;
+                string date = string.Empty;
 
-            if (txtMonth.Text.Trim().Length > 0)
-            {
-                date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
-            }
-
-            string Day = DateTime.Parse(date).Day.ToString();
-            string month = DateTime.Parse(date).Month.ToString();
-            string Year = DateTime.Parse(date).Year.ToString();
-
-
-            string Empid = "";
-
-
-            Empid = ddlEmpid.SelectedValue;
-
-            string Spname = "GetPinMyvisitImages";
-
-            Hashtable ht = new Hashtable();
-            ht.Add("@Day", Day);
-            ht.Add("@month", month);
-            ht.Add("@Year", Year);
-            ht.Add("@CompanyID", "6");
-            ht.Add("@Empid", Empid);
-            ht.Add("@PitstopAttachmentId", hfPitstopAttachmentId.Value);
-            ht.Add("@Type", "GetImageData");
-
-            DataTable dt = config.ExecuteAdaptorAsyncWithParams(Spname, ht).Result;
-
-            if (dt.Rows.Count > 0)
-            {
-                if (dt.Rows[0]["pitstopImage"].ToString().Length > 0)
+                if (txtMonth.Text.Trim().Length > 0)
                 {
-
-                    if (dt.Rows[0]["pitstopImage"].ToString().StartsWith("data"))
-                    {
-                        imgphoto.ImageUrl = dt.Rows[0]["pitstopImage"].ToString();
-                    }
-                    else
-                    {
-                        imgphoto.ImageUrl = "data:image/jpeg;base64," + dt.Rows[0]["pitstopImage"].ToString();
-                    }
-
+                    date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
                 }
-                
+
+                string Day = DateTime.Parse(date).Day.ToString();
+                string month = DateTime.Parse(date).Month.ToString();
+                string Year = DateTime.Parse(date).Year.ToString();
 
 
-                ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup();", true);
+                string Empid = "";
+
+
+                Empid = ddlEmpid.SelectedValue;
+
+                string Spname = "GetPinMyvisitImages";
+
+                Hashtable ht = new Hashtable();
+                ht.Add("@Day", Day);
+                ht.Add("@month", month);
+                ht.Add("@Year", Year);
+                ht.Add("@CompanyID", "6");
+                ht.Add("@Empid", Empid);
+                ht.Add("@PitstopAttachmentId", hfPitstopAttachmentId.Value);
+                ht.Add("@Type", "GetImageData");
+
+                DataTable dt = config.ExecuteAdaptorAsyncWithParams(Spname, ht).Result;
+
+                if (dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["pitstopImage"].ToString().Length > 0)
+                    {
+
+                        if (dt.Rows[0]["pitstopImage"].ToString().StartsWith("data"))
+                        {
+                            imgphoto.ImageUrl = dt.Rows[0]["pitstopImage"].ToString();
+                        }
+                        else
+                        {
+                            imgphoto.ImageUrl = "data:image/jpeg;base64," + dt.Rows[0]["pitstopImage"].ToString();
+                        }
+
+                    }
+
+
+
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup();", true);
+                }
             }
         }
 
         protected void lbtn_Export_Click(object sender, EventArgs e)
         {
-            if (txtMonth.Text.Trim().Length == 0)
-            {
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Month');", true);
-                return;
-            }
-
-            if (ddlEmpid.SelectedIndex == 0)
-            {
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "showlalert", "alert('Please Select Emp ID');", true);
-                return;
-            }
-
             string date = string.Empty;
+            string Fromdate = string.Empty;
+            string Todate = string.Empty;
 
-            if (txtMonth.Text.Trim().Length > 0)
+            string Day = "";
+            string month = "";
+            string Year = "";
+
+
+            if (ddltype.SelectedIndex == 0 || ddltype.SelectedIndex == 1)
             {
-                date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                if (txtMonth.Text.Trim().Length > 0)
+                {
+                    date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
+
+                Day = DateTime.Parse(date).Day.ToString();
+                month = DateTime.Parse(date).Month.ToString();
+                Year = DateTime.Parse(date).Year.ToString();
+            }
+            else
+            {
+                if (txtfrom.Text.Trim().Length > 0)
+                {
+                    Fromdate = DateTime.Parse(txtfrom.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
+                if (txtto.Text.Trim().Length > 0)
+                {
+                    Todate = DateTime.Parse(txtto.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
             }
 
-            string Day = DateTime.Parse(date).Day.ToString();
-            string month = DateTime.Parse(date).Month.ToString();
-            string Year = DateTime.Parse(date).Year.ToString();
 
             string Empid = "";
+            string Clientid = "";
+            string Activity = "";
+
+            if (ddloption.SelectedIndex == 0)
+            {
+                Empid = ddlEmpid.SelectedValue;
+            }
+
+            if (ddloption.SelectedIndex == 1)
+            {
+                Clientid = ddlClientID.SelectedValue;
+            }
+            else if (ddloption.SelectedIndex == 2)
+            {
+                Activity = ddlFOID.SelectedItem.Text;
+            }
+
             string DType = "Excel";
 
-            Empid = ddlEmpid.SelectedValue;
 
 
             string Spname = "GetPinMyvisitImages";
@@ -294,6 +430,12 @@ namespace Jawan.Portal
             ht.Add("@Empid", Empid);
             ht.Add("@Type", "GetData");
             ht.Add("@DType", DType);
+            ht.Add("@Option", ddloption.SelectedIndex);
+            ht.Add("@fromDate", Fromdate);
+            ht.Add("@ToDate", Todate);
+            ht.Add("@Clientid", Clientid);
+            ht.Add("@Activity", Activity);
+            ht.Add("@typewise", ddltype.SelectedIndex);
 
 
             DataTable dt = config.ExecuteAdaptorAsyncWithParams(Spname, ht).Result;
@@ -308,21 +450,55 @@ namespace Jawan.Portal
             string FontStyle = "calibri";
 
             string date = string.Empty;
+            string Fromdate = string.Empty;
+            string Todate = string.Empty;
 
-            if (txtMonth.Text.Trim().Length > 0)
+            string Day = "";
+            string month = "";
+            string Year = "";
+
+
+            if (ddltype.SelectedIndex == 0 || ddltype.SelectedIndex == 1)
             {
-                date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
-            }
+                if (txtMonth.Text.Trim().Length > 0)
+                {
+                    date = DateTime.Parse(txtMonth.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
 
-            string Day = DateTime.Parse(date).Day.ToString();
-            string month = DateTime.Parse(date).Month.ToString();
-            string Year = DateTime.Parse(date).Year.ToString();
+                Day = DateTime.Parse(date).Day.ToString();
+                month = DateTime.Parse(date).Month.ToString();
+                Year = DateTime.Parse(date).Year.ToString();
+            }
+            else
+            {
+                if (txtfrom.Text.Trim().Length > 0)
+                {
+                    Fromdate = DateTime.Parse(txtfrom.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
+                if (txtto.Text.Trim().Length > 0)
+                {
+                    Todate = DateTime.Parse(txtto.Text.Trim(), CultureInfo.GetCultureInfo("en-gb")).ToString("yyyy/MM/dd");
+                }
+            }
 
 
             string Empid = "";
+            string Clientid = "";
+            string Activity = "";
 
+            if (ddloption.SelectedIndex == 0)
+            {
+                Empid = ddlEmpid.SelectedValue;
+            }
 
-            Empid = ddlEmpid.SelectedValue;
+            if (ddloption.SelectedIndex == 1)
+            {
+                Clientid = ddlClientID.SelectedValue;
+            }
+            else if (ddloption.SelectedIndex == 2)
+            {
+                Activity = ddlFOID.SelectedItem.Text;
+            }
 
 
 
@@ -335,6 +511,12 @@ namespace Jawan.Portal
             ht.Add("@CompanyID", "6");
             ht.Add("@Empid", Empid);
             ht.Add("@Type", "GetImageDataByEmpid");
+            ht.Add("@Option", ddloption.SelectedIndex);
+            ht.Add("@fromDate", Fromdate);
+            ht.Add("@ToDate", Todate);
+            ht.Add("@Clientid", Clientid);
+            ht.Add("@Activity", Activity);
+            ht.Add("@typewise", ddltype.SelectedIndex);
 
             DataTable dt = config.ExecuteAdaptorAsyncWithParams(Spname, ht).Result;
 
@@ -511,16 +693,76 @@ namespace Jawan.Portal
 
         protected void ddltype_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddltype.SelectedIndex==0)
+            ClearData();
+            if (ddltype.SelectedIndex == 0)
             {
                 lblDay.Visible = true;
                 lblMonth.Visible = false;
+                txtMonth.Visible = true;
+                lblfrom.Visible = false;
+                txtfrom.Visible = false;
+                lblto.Visible = false;
+                txtto.Visible = false;
             }
-            else
+            else if (ddltype.SelectedIndex == 1)
             {
                 lblDay.Visible = false;
                 lblMonth.Visible = true;
+                txtMonth.Visible = true;
+                lblfrom.Visible = false;
+                txtfrom.Visible = false;
+                lblto.Visible = false;
+                txtto.Visible = false;
             }
+            else
+            {
+                txtMonth.Visible = false;
+                lblDay.Visible = false;
+                lblMonth.Visible = false;
+                lblfrom.Visible = true;
+                txtfrom.Visible = true;
+                lblto.Visible = true;
+                txtto.Visible = true;
+            }
+        }
+
+        protected void ddloption_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearData();
+            if (ddloption.SelectedIndex == 0)
+            {
+                lblclientid.Visible = false;
+                ddlClientID.Visible = false;
+                lblclientname.Visible = false;
+                ddlCName.Visible = false;
+                lblempid.Visible = true;
+                ddlEmpid.Visible = true;
+                lblActivity.Visible = false;
+                ddlFOID.Visible = false;
+            }
+            else if (ddloption.SelectedIndex == 1)
+            {
+                lblclientid.Visible = true;
+                ddlClientID.Visible = true;
+                lblclientname.Visible = true;
+                ddlCName.Visible = true;
+                lblempid.Visible = false;
+                ddlEmpid.Visible = false;
+                lblActivity.Visible = false;
+                ddlFOID.Visible = false;
+            }
+            else if (ddloption.SelectedIndex == 2)
+            {
+                lblclientid.Visible = false;
+                ddlClientID.Visible = false;
+                lblclientname.Visible = false;
+                ddlCName.Visible = false;
+                lblempid.Visible = false;
+                ddlEmpid.Visible = false;
+                lblActivity.Visible = true;
+                ddlFOID.Visible = true;
+            }
+
         }
     }
 }
