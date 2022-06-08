@@ -31,6 +31,7 @@ namespace Jawan.Portal
         string CmpIDPrefix = "";
         string BranchID = "";
 
+        //page changes done by Mahesh Goud on 2022-06-08
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -88,8 +89,8 @@ namespace Jawan.Portal
 
         protected void LoadClientNames()
         {
-            string query = "select distinct p.clientid,c.clientname from Pitstop p inner join Demo_Android_New.dbo.clients c on c.clientid=p.clientid where companyid=6 and p.clientid is not null";
-            DataTable DtClientids = config.PocketFameExecuteAdaptorAsyncWithQueryParams(query).Result;
+            string query = "select distinct clientid,clientname from clients where clientstatus=1";
+            DataTable DtClientids = config.ExecuteAdaptorAsyncWithQueryParams(query).Result;
             if (DtClientids.Rows.Count > 0)
             {
                 ddlCName.DataValueField = "Clientid";
@@ -115,12 +116,13 @@ namespace Jawan.Portal
                 ddlFOID.DataBind();
             }
             ddlFOID.Items.Insert(0, "-Select-");
+            ddlFOID.Items.Insert(1, "ALL");
         }
 
         protected void LoadClientList()
         {
-            string query = "select distinct clientid from Pitstop where companyid=6 and clientid is not null";
-            DataTable DtClientNames = config.PocketFameExecuteAdaptorAsyncWithQueryParams(query).Result;
+            string query = "select distinct clientid from clients where clientstatus=1";
+            DataTable DtClientNames = config.ExecuteAdaptorAsyncWithQueryParams(query).Result;
             if (DtClientNames.Rows.Count > 0)
             {
                 ddlClientID.DataValueField = "clientid";
@@ -210,16 +212,38 @@ namespace Jawan.Portal
 
             if (ddloption.SelectedIndex == 0)
             {
-                Empid = ddlEmpid.SelectedValue;
+                if (ddlEmpid.SelectedIndex==1)
+                {
+                    Empid = "%";
+                }
+                else
+                {
+                    Empid = ddlEmpid.SelectedValue;
+                }
             }
 
             if (ddloption.SelectedIndex == 1)
             {
-                Clientid = ddlClientID.SelectedValue;
+                if (ddlClientID.SelectedIndex==1)
+                {
+                    Clientid = "%";
+                }
+                else
+                {
+                    Clientid = ddlClientID.SelectedValue;
+                }
             }
             else if (ddloption.SelectedIndex == 2)
             {
-                Activity = ddlFOID.SelectedItem.Text;
+                if (ddlFOID.SelectedIndex == 1)
+                {
+                    Activity = "%";
+                }
+                else
+                {
+                    Activity = ddlFOID.SelectedItem.Text;
+                }
+               
             }
 
 
@@ -405,16 +429,37 @@ namespace Jawan.Portal
 
             if (ddloption.SelectedIndex == 0)
             {
-                Empid = ddlEmpid.SelectedValue;
+                if (ddlEmpid.SelectedIndex == 1)
+                {
+                    Empid = "%";
+                }
+                else
+                {
+                    Empid = ddlEmpid.SelectedValue;
+                }
             }
 
             if (ddloption.SelectedIndex == 1)
             {
-                Clientid = ddlClientID.SelectedValue;
+                if (ddlClientID.SelectedIndex == 1)
+                {
+                    Clientid = "%";
+                }
+                else
+                {
+                    Clientid = ddlClientID.SelectedValue;
+                }
             }
             else if (ddloption.SelectedIndex == 2)
             {
-                Activity = ddlFOID.SelectedItem.Text;
+                if (ddlFOID.SelectedIndex == 1)
+                {
+                    Activity = "%";
+                }
+                else
+                {
+                    Activity = ddlFOID.SelectedItem.Text;
+                }
             }
 
             string DType = "Excel";
@@ -488,16 +533,37 @@ namespace Jawan.Portal
 
             if (ddloption.SelectedIndex == 0)
             {
-                Empid = ddlEmpid.SelectedValue;
+                if (ddlEmpid.SelectedIndex == 1)
+                {
+                    Empid = "%";
+                }
+                else
+                {
+                    Empid = ddlEmpid.SelectedValue;
+                }
             }
 
             if (ddloption.SelectedIndex == 1)
             {
-                Clientid = ddlClientID.SelectedValue;
+                if (ddlClientID.SelectedIndex == 1)
+                {
+                    Clientid = "%";
+                }
+                else
+                {
+                    Clientid = ddlClientID.SelectedValue;
+                }
             }
             else if (ddloption.SelectedIndex == 2)
             {
-                Activity = ddlFOID.SelectedItem.Text;
+                if (ddlFOID.SelectedIndex == 1)
+                {
+                    Activity = "%";
+                }
+                else
+                {
+                    Activity = ddlFOID.SelectedItem.Text;
+                }
             }
 
 
@@ -671,10 +737,16 @@ namespace Jawan.Portal
 
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
+                string filename = "";
+                if (ddlEmpid.SelectedItem.Text== "--Select--")
+                {
+                     filename = "Pinmyvisits" + ".pdf";
+                }
+                else
+                {
+                    filename = ddlEmpid.SelectedItem.Text + ".pdf";
+                }
 
-
-
-                string filename = ddlEmpid.SelectedItem.Text + ".pdf";
 
                 document.Close();
                 Response.Clear();

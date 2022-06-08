@@ -175,7 +175,6 @@
                 select: function (event, ui) { $("#ddlEmpid").attr("data-clientId", ui.item.value); OnAutoCompleteDDLVendoridchange(event, ui); },
                 select: function (event, ui) { $("#ddlClientID").attr("data-clientId", ui.item.value); OnAutoCompleteDDLClientidchange(event, ui); },
                 select: function (event, ui) { $("#ddlCName").attr("data-clientId", ui.item.value); OnAutoCompleteDDLClientnamechange(event, ui); },
-                select: function (event, ui) { $("#ddlFOID").attr("data-clientId", ui.item.value); OnAutoCompleteDDLFoidchange(event, ui); },
                 minLength: 4
             });
         }
@@ -213,10 +212,7 @@
 
             $('#ddlCName').trigger('change');
         }
-        function OnAutoCompleteDDLFoidchange(event, ui) {
 
-            $('#ddlFOID').trigger('change');
-        }
         function Check_Click(objRef) {
             //Get the Row based on checkbox
             var row = objRef.parentNode.parentNode;
@@ -426,123 +422,124 @@
                                 <div style="float: right">
                                     <asp:LinkButton ID="lbtn_Export" runat="server" OnClick="lbtn_Export_Click">Export to Excel</asp:LinkButton>
                                 </div>
-                                <table width="100%" style="margin: 10px auto">
-                                    <tr>
-                                        <td>Type</td>
-                                        <td>
-                                            <asp:DropDownList ID="ddltype" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddltype_SelectedIndexChanged" runat="server">
-                                                <asp:ListItem>Day Wise</asp:ListItem>
-                                                <asp:ListItem>Month Wise</asp:ListItem>
-                                                <asp:ListItem>From To</asp:ListItem>
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td>Option</td>
-                                        <td>
-                                            <asp:DropDownList ID="ddloption" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddloption_SelectedIndexChanged" runat="server">
-                                                <asp:ListItem>Employee Wise</asp:ListItem>
-                                                <asp:ListItem>Client Wise</asp:ListItem>
-                                                <asp:ListItem>Activity</asp:ListItem>
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                <div>
+                                    <table width="100%" style="margin: 10px auto">
+                                        <tr>
+                                            <td>Type</td>
+                                            <td>
+                                                <asp:DropDownList ID="ddltype" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddltype_SelectedIndexChanged" runat="server">
+                                                    <asp:ListItem>Day Wise</asp:ListItem>
+                                                    <asp:ListItem>Month Wise</asp:ListItem>
+                                                    <asp:ListItem>From To</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </td>
+                                            <td>Option</td>
+                                            <td>
+                                                <asp:DropDownList ID="ddloption" CssClass="sdrop" AutoPostBack="true" Width="150px" OnSelectedIndexChanged="ddloption_SelectedIndexChanged" runat="server">
+                                                    <asp:ListItem>Employee Wise</asp:ListItem>
+                                                    <asp:ListItem>Client Wise</asp:ListItem>
+                                                    <asp:ListItem>Activity</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </td>
+                                        </tr>
+                                        <tr>
 
-                                        <td>
-                                            <asp:Label runat="server" ID="lblclientid" Visible="false" Text="Client ID"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlClientID" Visible="false" runat="server" CssClass="ddlautocomplete chosen-select" AutoPostBack="True" OnSelectedIndexChanged="ddlClientID_SelectedIndexChanged"
-                                                Width="120px">
-                                            </asp:DropDownList>
-                                        </td>
+                                            <td>
+                                                <asp:Label runat="server" ID="lblclientid" Visible="false" Text="Client ID"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlClientID" Visible="false" runat="server" CssClass="ddlautocomplete chosen-select" AutoPostBack="True" OnSelectedIndexChanged="ddlClientID_SelectedIndexChanged"
+                                                    Width="120px">
+                                                </asp:DropDownList>
+                                            </td>
 
-                                        <td>
-                                            <asp:Label runat="server" Visible="false" ID="lblclientname" Text="Name"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlCName" Visible="false" runat="server" placeholder="select" CssClass="ddlautocomplete chosen-select" AutoPostBack="true" OnSelectedIndexChanged="ddlCName_SelectedIndexChanged">
-                                            </asp:DropDownList>
-                                        </td>
+                                            <td>
+                                                <asp:Label runat="server" Visible="false" ID="lblclientname" Text="Name"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlCName" Visible="false" runat="server" placeholder="select" CssClass="ddlautocomplete chosen-select" AutoPostBack="true" OnSelectedIndexChanged="ddlCName_SelectedIndexChanged">
+                                                </asp:DropDownList>
+                                            </td>
 
-                                    </tr>
-                                    <tr>
+                                        </tr>
+                                        <tr>
 
-                                        <td>
-                                            <asp:Label runat="server" ID="lblempid" Text="Emp ID/Name"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlEmpid" runat="server" CssClass="ddlautocomplete chosen-select" Width="150px"></asp:DropDownList>
-                                        </td>
+                                            <td>
+                                                <asp:Label runat="server" ID="lblempid" Text="Emp ID/Name"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlEmpid" runat="server" CssClass="ddlautocomplete chosen-select" Width="150px"></asp:DropDownList>
+                                            </td>
 
-                                        <td>
-                                            <asp:Label ID="lblDay" runat="server" Text="Day"></asp:Label>
-                                            <asp:Label ID="lblMonth" runat="server" Visible="false" Text="Month"></asp:Label>
-                                        </td>
-                                        
-                                        <td>
-                                            <asp:TextBox ID="txtMonth" runat="server" class="sinput" autocomplete="off"></asp:TextBox>
-                                            <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="true" TargetControlID="txtMonth"
-                                                Format="dd/MM/yyyy">
-                                            </cc1:CalendarExtender>
-                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" Enabled="True"
-                                                TargetControlID="txtMonth" ValidChars="/0123456789-">
-                                            </cc1:FilteredTextBoxExtender>
+                                            <td>
+                                                <asp:Label ID="lblDay" runat="server" Text="Day"></asp:Label>
+                                                <asp:Label ID="lblMonth" runat="server" Visible="false" Text="Month"></asp:Label>
+                                            </td>
 
-                                        </td>
-                                         <td>
-                                            <asp:Button ID="btnSubmit" runat="server" Text="Submit" class=" btn save" OnClick="btnSubmit_Click" ToolTip="Submit" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <asp:Label Visible="false" runat="server" ID="lblActivity" Text="Activity"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlFOID" runat="server" Visible="false" CssClass="ddlautocomplete chosen-select"
-                                                Width="120px">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                            <td>
+                                                <asp:TextBox ID="txtMonth" runat="server" class="sinput" autocomplete="off"></asp:TextBox>
+                                                <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="true" TargetControlID="txtMonth"
+                                                    Format="dd/MM/yyyy">
+                                                </cc1:CalendarExtender>
+                                                <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" Enabled="True"
+                                                    TargetControlID="txtMonth" ValidChars="/0123456789-">
+                                                </cc1:FilteredTextBoxExtender>
 
-
-                                        <td>
-                                            <asp:Label ID="lblfrom" runat="server" Visible="false" Text="From"></asp:Label>
-                                        </td>
-
-                                        <td>
-                                            <asp:TextBox ID="txtfrom" runat="server" Visible="false" autocomplete="off" class="form-control" Width="200px"></asp:TextBox>
-                                            <cc1:CalendarExtender ID="txtfrom_CalendarExtender" runat="server" BehaviorID="calendar1"
-                                                Enabled="true" Format="dd/MM/yyyy" TargetControlID="txtfrom">
-                                            </cc1:CalendarExtender>
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="lblto" runat="server" Visible="false" Text="To"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtto" runat="server" Visible="false" autocomplete="off" class="form-control" Width="200px"></asp:TextBox>
-                                            <cc1:CalendarExtender ID="txtto_CalendarExtender" runat="server" BehaviorID="calendar2"
-                                                Enabled="true" Format="dd/MM/yyyy" TargetControlID="txtto">
-                                            </cc1:CalendarExtender>
-                                        </td>
-
-                                    </tr>
+                                            </td>
+                                            <td>
+                                                <asp:Button ID="btnSubmit" runat="server" Text="Submit" class=" btn save" OnClick="btnSubmit_Click" ToolTip="Submit" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:Label Visible="false" runat="server" ID="lblActivity" Text="Activity"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlFOID" runat="server" Visible="false" CssClass="ddlautocomplete chosen-select"
+                                                    Width="120px">
+                                                </asp:DropDownList>
+                                            </td>
+                                        </tr>
+                                        <tr>
 
 
+                                            <td>
+                                                <asp:Label ID="lblfrom" runat="server" Visible="false" Text="From"></asp:Label>
+                                            </td>
 
-                                </table>
-                                <table>
-                                    <tr>
-                                       
-                                        <td>
+                                            <td>
+                                                <asp:TextBox ID="txtfrom" runat="server" Visible="false" autocomplete="off" class="form-control" Width="200px"></asp:TextBox>
+                                                <cc1:CalendarExtender ID="txtfrom_CalendarExtender" runat="server" BehaviorID="calendar1"
+                                                    Enabled="true" Format="dd/MM/yyyy" TargetControlID="txtfrom">
+                                                </cc1:CalendarExtender>
+                                            </td>
+                                            <td>
+                                                <asp:Label ID="lblto" runat="server" Visible="false" Text="To"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtto" runat="server" Visible="false" autocomplete="off" class="form-control" Width="200px"></asp:TextBox>
+                                                <cc1:CalendarExtender ID="txtto_CalendarExtender" runat="server" BehaviorID="calendar2"
+                                                    Enabled="true" Format="dd/MM/yyyy" TargetControlID="txtto">
+                                                </cc1:CalendarExtender>
+                                            </td>
 
-                                        </td>
-                                        <td>
-                                            <asp:Button ID="Button1" runat="server" Text="PDF" class=" btn save" OnClick="Button1_Click" ToolTip="Submit" />
-                                        </td>
-                                    </tr>
-                                </table>
+                                        </tr>
 
+
+
+                                    </table>
+                                </div>
+                                <div>
+                                    <table>
+                                        <tr>
+
+                                            <td></td>
+                                            <td>
+                                                <asp:Button ID="Button1" runat="server" Text="PDF" class=" btn save" OnClick="Button1_Click" ToolTip="Submit" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
 
 
                                 <div style="width: 100%; margin-top: 30px">
@@ -561,10 +558,10 @@
                                             <asp:BoundField DataField="EmpFName" HeaderText="Name" />
                                             <asp:BoundField DataField="Clientid" HeaderText="Client ID" />
                                             <asp:TemplateField HeaderText="Created On" ItemStyle-Width="60px">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblUpdatedOn" runat="server" Text='<%#Eval("UpdatedOn", "{0:dd/MM/yyyy}")%>'></asp:Label>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblUpdatedOn" runat="server" Text='<%#Eval("UpdatedOn", "{0:dd/MM/yyyy}")%>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:BoundField DataField="EmpRemarks" HeaderText="Remarks" />
                                             <asp:BoundField DataField="Activity" HeaderText="Activity" />
                                             <asp:BoundField DataField="CheckinLat" HeaderText="Checkin Lat" />
